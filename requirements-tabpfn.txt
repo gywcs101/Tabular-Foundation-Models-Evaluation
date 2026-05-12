@@ -1,0 +1,4 @@
+-r requirements-core.txt
+openml>=0.15
+tabpfn>=2.0
+

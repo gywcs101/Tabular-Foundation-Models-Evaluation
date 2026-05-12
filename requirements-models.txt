@@ -1,0 +1,6 @@
+openml>=0.15
+lightgbm>=4.0
+xgboost>=2.0
+tabpfn>=2.0
+tabicl>=2.0
+

@@ -1,0 +1,49 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments
+.conda/
+.venv/
+venv/
+env/
+
+# Downloaded datasets and OpenML cache
+data/openml_cache/**
+!data/openml_cache/
+!data/openml_cache/.gitkeep
+
+# Model weights and large artifacts
+models/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.pkl
+*.joblib
+
+# Temporary root-level results. Put shareable experiment CSVs under results/raw/ or results/final/.
+results/*.csv
+results/*.json
+results/tmp/
+results/smoke_test.csv
+
+# Keep result folders available for curated CSVs and figures.
+!results/raw/
+!results/raw/.gitkeep
+!results/final/
+!results/final/.gitkeep
+!results/figures/
+!results/figures/.gitkeep
+
+# Local notebooks and OS/editor noise
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

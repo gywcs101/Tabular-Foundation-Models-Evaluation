@@ -1,0 +1,4 @@
+-r requirements-core.txt
+openml>=0.15
+tabicl>=2.0
+
