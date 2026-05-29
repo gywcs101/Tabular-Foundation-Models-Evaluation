@@ -31,9 +31,10 @@ GitHub 仓库只保存轻量、可复现、适合协作的内容：
 本项目采用“每个模型一个环境”的协作策略：
 
 ```text
-env_baselines  -> LightGBM / XGBoost
-env_tabpfn     -> TabPFN
-env_tabicl     -> TabICL
+env_tabpfn   -> TabPFN
+env_tabicl   -> TabICL
+env_xgboost  -> XGBoost
+env_lightgbm -> LightGBM
 ```
 
 优点：
@@ -46,6 +47,15 @@ env_tabicl     -> TabICL
 
 - 不能一个命令跑完所有模型。
 - 需要统一结果格式，最后再合并。
+
+当前本机路径示例：
+
+```text
+E:\Software_Download\Anaconda\envs\tabpfn
+E:\Software_Download\Anaconda\envs\tabicl
+E:\Software_Download\Anaconda\envs\xgboost
+E:\Software_Download\Anaconda\envs\lightgbm
+```
 
 ## 3. 依赖安装
 
@@ -115,7 +125,16 @@ error_message
 
 模型各自保存在本地，不上传 GitHub。
 
-OpenML 数据也各自下载到本地缓存，不上传 GitHub。只要脚本中固定：
+当前本机数据路径示例：
+
+```text
+E:\Software_Download\TALENT-tabular-benchmark
+E:\Software_Download\tabarena
+```
+
+TALENT 数据包可直接作为实验数据来源。TabArena 当前是源码仓库和元数据，适合参考数据集列表和评测思路，不等于完整可训练数据缓存。
+
+OpenML、TALENT、TabArena 原始数据都不上传 GitHub。只要脚本中固定：
 
 - 数据集名称或 OpenML id
 - 数据集版本
@@ -144,4 +163,3 @@ __pycache__/
 *.safetensors
 results/smoke_test.csv
 ```
-

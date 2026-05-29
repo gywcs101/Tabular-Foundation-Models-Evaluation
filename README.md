@@ -6,10 +6,10 @@
 
 先搭建一套可复现实验流程：
 
-1. 从 OpenML 下载代表性表格数据集。
+1. 从 TALENT/OpenML 等来源读取代表性表格数据集。
 2. 运行 TabPFN v2、TabICL、LightGBM、XGBoost。
 3. 记录 accuracy、balanced accuracy、macro F1、训练耗时、推理耗时。
-4. 做数据规模实验、缺失值鲁棒性实验和 retrieval-based in-context learning 加分实验。
+4. 分开做样本数扩展性、特征数扩展性、缺失值鲁棒性和 retrieval-based in-context learning 加分实验。
 5. 生成报告和 PPT 可用的结果表与图表。
 
 ## 依赖安装
@@ -20,6 +20,15 @@ baseline 环境安装：
 
 ```powershell
 python -m pip install -r requirements-baselines.txt
+```
+
+当前推荐按模型分别维护环境：
+
+```text
+E:\Software_Download\Anaconda\envs\tabpfn
+E:\Software_Download\Anaconda\envs\tabicl
+E:\Software_Download\Anaconda\envs\xgboost
+E:\Software_Download\Anaconda\envs\lightgbm
 ```
 
 TabPFN 环境安装：
@@ -60,6 +69,12 @@ GitHub 协作规则见：
 docs/github_collaboration.md
 ```
 
+TALENT 数据集筛选准则见：
+
+```text
+docs/dataset_selection_criteria.md
+```
+
 完整仓库结构说明见：
 
 ```text
@@ -68,22 +83,43 @@ docs/repository_structure.md
 
 ## 推荐执行顺序
 
-先准备数据：
+先检查本机已下载的模型环境和数据集：
+
+```powershell
+python scripts/check_local_assets.py
+```
+
+当前默认检查：
+
+```text
+E:\Software_Download\Anaconda\envs\tabpfn
+E:\Software_Download\Anaconda\envs\tabicl
+E:\Software_Download\TALENT-tabular-benchmark
+E:\Software_Download\tabarena
+```
+
+再准备数据：
 
 ```powershell
 python scripts/prepare_data.py --datasets all
 ```
 
-再跑主实验。默认每个数据集最多取 10000 行，适合先在普通笔记本上验证流程：
+再跑主实验。样本数扩展性先按轻量或稳健方案之一执行，特征数扩展性优先使用 `mfeat` 系列：
 
 ```powershell
-python scripts/run_benchmark.py --datasets all --models all --sample-sizes 10000
+python scripts/run_benchmark.py --datasets all --models all --sample-sizes 1000,3000,10000
 ```
 
-做规模实验：
+做样本数扩展性实验（轻量或稳健方案二选一）：
 
 ```powershell
-python scripts/run_benchmark.py --datasets adult,bank-marketing --models all --sample-sizes 500,1000,2000,5000,10000,30000 --output results/scalability_metrics.csv
+python scripts/run_benchmark.py --datasets pc1,kc1,sylvine,ringnorm,jm1,default_of_credit_card_clients --models all --sample-sizes 1000,3000,10000,30000 --output results/sample_scaling_metrics.csv
+```
+
+做特征数扩展性实验：
+
+```powershell
+python scripts/run_benchmark.py --datasets mfeat-morphological,mfeat-zernike,mfeat-karhunen,mfeat-fourier,mfeat-factors,mfeat-pixel --models all --sample-sizes 2000 --output results/feature_scaling_metrics.csv
 ```
 
 做缺失值鲁棒性实验：
@@ -120,4 +156,4 @@ python scripts/run_smoke_test.py
 
 - TabPFN 和 TabICL 首次运行可能会下载模型权重，因此需要网络。
 - 如果本地 CPU 太慢，优先把 TabICL 和大规模实验放到远端 GPU 上运行。
-- 不建议一开始全量跑大型 benchmark；先跑通小规模流程，再逐步扩大。
+- 不建议全量跑大型 benchmark；先按 `docs/dataset_selection_criteria.md` 分开做样本数扩展性和特征数扩展性实验，再逐步扩大。样本数扩展性目前保留轻量和稳健两套方案，待审核后定稿。
