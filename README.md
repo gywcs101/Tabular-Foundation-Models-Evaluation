@@ -8,7 +8,7 @@
 
 1. 从 TALENT/OpenML 等来源读取代表性表格数据集。
 2. 运行 TabPFN v2、TabICL、LightGBM、XGBoost。
-3. 记录 accuracy、balanced accuracy、macro F1、训练耗时、推理耗时。
+3. 记录 accuracy、balanced accuracy、macro F1、置信度、训练耗时、推理耗时、墙钟时间、峰值内存和训练吞吐量。
 4. 分开做样本数扩展性、特征数扩展性、缺失值鲁棒性和 retrieval-based in-context learning 加分实验。
 5. 生成报告和 PPT 可用的结果表与图表。
 
@@ -110,16 +110,16 @@ python scripts/prepare_data.py --datasets all
 python scripts/run_benchmark.py --datasets all --models all --sample-sizes 1000,3000,10000
 ```
 
-做样本数扩展性实验（轻量或稳健方案二选一）：
+做样本数扩展性实验（轻量或稳健方案二选一；正式脚本更新后结果写入 `results/raw/`）：
 
 ```powershell
-python scripts/run_benchmark.py --datasets pc1,kc1,sylvine,ringnorm,jm1,default_of_credit_card_clients --models all --sample-sizes 1000,3000,10000,30000 --output results/sample_scaling_metrics.csv
+python scripts/run_benchmark.py --datasets pc1,kc1,sylvine,ringnorm,jm1,default_of_credit_card_clients --models all --sample-sizes 1000,3000,10000,30000
 ```
 
 做特征数扩展性实验：
 
 ```powershell
-python scripts/run_benchmark.py --datasets mfeat-morphological,mfeat-zernike,mfeat-karhunen,mfeat-fourier,mfeat-factors,mfeat-pixel --models all --sample-sizes 2000 --output results/feature_scaling_metrics.csv
+python scripts/run_benchmark.py --datasets mfeat-morphological,mfeat-zernike,mfeat-karhunen,mfeat-fourier,mfeat-factors,mfeat-pixel --models all --sample-sizes 2000
 ```
 
 做缺失值鲁棒性实验：

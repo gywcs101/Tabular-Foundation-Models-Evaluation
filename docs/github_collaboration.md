@@ -85,19 +85,17 @@ python -m pip install -r requirements.txt
 
 ## 4. 结果文件规则
 
-两名成员不要直接同时修改同一个 `metrics.csv`。建议每个人输出自己的结果文件：
+两名成员不要直接同时修改同一个汇总表。建议每次实验输出到独立运行目录：
 
 ```text
-results/raw/member_a_tabpfn.csv
-results/raw/member_b_tabicl.csv
-results/raw/member_a_baselines.csv
-results/raw/member_b_baselines.csv
+results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
 ```
 
 整理后再合并成：
 
 ```text
 results/final/final_metrics.csv
+results/final/scalability_alpha.csv
 ```
 
 每条结果至少包含：
@@ -111,15 +109,29 @@ test_rows
 accuracy
 balanced_accuracy
 macro_f1
+mean_confidence
+correct_mean_confidence
+wrong_mean_confidence
+confidence_gap
 fit_time_seconds
 predict_time_seconds
+wall_time_seconds
 seconds_per_test_sample
+peak_memory_mb
 device
 environment_name
 package_versions
 success
 error_message
 ```
+
+说明：
+
+- `mean_confidence` 等置信度指标必须在单次实验结束时写入 `metrics.csv`。
+- `wall_time_seconds` 必须在单次实验结束时写入 `metrics.csv`。
+- `peak_memory_mb` 使用 `psutil` 后台采样当前 Python 进程 RSS 的峰值，必须在单次实验结束时写入 `metrics.csv`。
+- `memory_before_mb` 和 `memory_after_mb` 不属于正式协作结果字段。
+- 增长速率阶数 `alpha` 需要多个规模点，完整结果合并后再写入 `results/final/scalability_alpha.csv`。
 
 ## 5. 本地模型和数据
 

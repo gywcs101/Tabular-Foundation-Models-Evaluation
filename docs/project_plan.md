@@ -119,10 +119,24 @@ docs/dataset_selection_criteria.md
 - accuracy
 - balanced accuracy
 - macro F1
-- 推理总耗时
+- mean confidence / correct mean confidence / wrong mean confidence / confidence gap
+- 拟合耗时
+- 推理耗时
 - 平均每条样本推理耗时
+- 墙钟总时间
+- 峰值内存消耗
+- 训练吞吐量
 - 是否成功运行
 - 失败原因
+
+后处理统一生成：
+
+- `accuracy / macro_f1` 折线图
+- `time` 柱状图
+- `log(T)=αlog(N)+C` 的增长速率拟合图
+- `Training Throughput` 对比图
+- 置信度直方图和正确/错误置信度对比图
+- 混淆矩阵热力图
 
 ### 3.2 样本数扩展性实验
 
@@ -138,7 +152,7 @@ docs/dataset_selection_criteria.md
 - 不因为某个模型较慢就单独换更小数据。
 - 如果模型跑不动，记录失败点、耗时、内存/显存情况和错误信息。
 
-这个实验用于回答样本数变大后模型是否还能保持速度和性能。
+这个实验用于回答样本数变大后模型是否还能保持速度和性能。后续会用 `log(T)=αlog(N)+C` 拟合样本数增长速率，并用训练吞吐量辅助比较模型效率。
 
 ### 3.3 特征数扩展性实验
 
@@ -217,7 +231,8 @@ docs/dataset_selection_criteria.md
 ├── data/
 │   └── openml_cache/
 ├── results/
-│   ├── metrics.csv
+│   ├── raw/
+│   ├── final/
 │   └── figures/
 ├── report/
 └── slides/
@@ -228,7 +243,9 @@ docs/dataset_selection_criteria.md
 - `docs/` 保存策划案和文献笔记。
 - `scripts/` 保存实验脚本。
 - `data/` 保存下载缓存，不建议提交大数据文件。
-- `results/` 保存结果表和图。
+- `results/raw/` 保存单次实验目录，每次运行包含 `metrics.csv`、`run_config.json`、`predictions.csv`、`confusion_matrix.csv`、`run.log`。
+- `results/final/` 保存合并后的总表和跨实验统计，例如 `final_metrics.csv`、`scalability_alpha.csv`。
+- `results/figures/` 保存最终图表。
 - `report/` 保存最终报告。
 - `slides/` 保存答辩 PPT。
 
@@ -246,7 +263,7 @@ docs/dataset_selection_criteria.md
 第 2 周：主实验
 
 - 完成样本数扩展性和特征数扩展性候选数据集的主实验。
-- 生成第一版 `results/metrics.csv`。
+- 生成第一版 `results/raw/{model}/.../metrics.csv`，并合并为 `results/final/final_metrics.csv`。
 - 记录所有成功和失败情况。
 
 第 3 周：扩展性实验

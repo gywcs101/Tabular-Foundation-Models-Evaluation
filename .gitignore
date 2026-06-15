@@ -15,6 +15,8 @@ env/
 data/openml_cache/**
 !data/openml_cache/
 !data/openml_cache/.gitkeep
+data/selected_talent/**
+!data/selected_talent/
 
 # Model weights and large artifacts
 models/

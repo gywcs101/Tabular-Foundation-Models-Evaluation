@@ -1,16 +1,16 @@
 # Execution Status
 
-更新时间：2026-05-29
+更新时间：2026-06-09
 
 ## 当前阶段
 
 当前项目处于：
 
 ```text
-GitHub 协作已就绪，正式实验前资源核验阶段
+GitHub 协作已就绪，正在统一正式结果格式，尚未开始新口径主实验
 ```
 
-项目内容已经放到 GitHub。当前重点是确认两名成员的本地模型环境、数据集目录、运行脚本和结果合并规则一致。当前不追求全量跑实验，先保证本地资源能被脚本识别。
+项目内容已经放到 GitHub。当前重点是确认两名成员的本地模型环境、数据集目录、运行脚本和结果合并规则一致。旧口径试跑结果已经清空，后续正式实验需要先按 `docs/measurement_plan.md` 修改脚本输出字段。
 
 ## 已完成
 
@@ -20,6 +20,7 @@ GitHub 协作已就绪，正式实验前资源核验阶段
 - 完成 GitHub 协作说明：`docs/github_collaboration.md`。
 - 完成仓库结构说明：`docs/repository_structure.md`。
 - 完成 TALENT 数据集筛选准则：`docs/dataset_selection_criteria.md`。
+- 完成实验测量计划：`docs/measurement_plan.md`。
 - 完成 GitHub 仓库上传。
 - 建立实验脚本和共享工具模块：
   - `scripts/project_config.py`
@@ -89,7 +90,12 @@ E:\Software_Download\tabarena
 - 数据集筛选遵守 `docs/dataset_selection_criteria.md`：当前保留样本数扩展性的轻量方案和稳健方案，待用户审核后定稿。
 - 样本数扩展性候选以 `pc1`、`kc1`、`sylvine`、`ringnorm`、`jm1`、`default_of_credit_card_clients` 为主，目标是让特征数尽量接近。
 - 特征数扩展性候选以 `mfeat-morphological`、`mfeat-zernike`、`mfeat-karhunen`、`mfeat-fourier`、`mfeat-factors`、`mfeat-pixel` 为主，目标是让样本数尽量固定在 2000 行附近。
-- 后续结果统一写入 `results/raw/`，再合并到 `results/final/`。
+- 后续结果统一写入 `results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/`，再合并到 `results/final/`。
+- 结果分析口径已统一为：`accuracy`、`balanced_accuracy`、`macro_f1`、置信度指标、时间/峰值内存指标、实验状态和扩展性派生指标。
+- 单次实验能计算出的数字必须当场写入 `metrics.csv`，包括置信度指标、`wall_time_seconds`、`peak_memory_mb`、`training_throughput`。
+- `peak_memory_mb` 计划使用 `psutil` 后台采样当前 Python 进程 RSS 峰值。
+- `memory_before_mb` 和 `memory_after_mb` 不再作为正式结果字段。
+- 旧训练结果已删除；当前 `results/` 只保留 `raw/`、`final/`、`figures/` 目录和占位文件。
 
 ## 已验证命令
 
@@ -110,5 +116,6 @@ OVERALL=OK
 
 1. 和队友确认是否采用同样的目录命名规则。
 2. 按 `docs/dataset_selection_criteria.md` 验证样本数扩展性的轻量/稳健方案和特征数扩展性候选数据集。
-3. 用小数据集分别验证 TabPFN、TabICL、LightGBM、XGBoost 的单模型运行脚本。
-4. 统一结果 CSV 字段后，再进入完整主实验。
+3. 按 `docs/measurement_plan.md` 修改实验脚本结果字段、峰值内存采样和输出路径。
+4. 用小数据集分别验证 TabPFN、TabICL、LightGBM、XGBoost 的单模型运行脚本。
+5. 统一结果 CSV 字段后，再进入完整主实验。

@@ -18,20 +18,21 @@ def make_classifier(
     device: str | None = None,
     foundation_estimators: int = 8,
     tree_estimators: int = 300,
+    model_path: str | None = None,
 ):
     if model_name == "tabpfn":
         from tabpfn import TabPFNClassifier
 
-        kwargs = _filter_kwargs(
-            TabPFNClassifier,
-            {
-                "device": device or "cpu",
-                "seed": seed,
-                "random_state": seed,
-                "n_estimators": foundation_estimators,
-                "show_progress": False,
-            },
-        )
+        raw_kwargs = {
+            "device": device or "cpu",
+            "random_state": seed,
+            "n_estimators": foundation_estimators,
+            "show_progress_bar": False,
+            "ignore_pretraining_limits": True,
+        }
+        if model_path is not None:
+            raw_kwargs["model_path"] = model_path
+        kwargs = _filter_kwargs(TabPFNClassifier, raw_kwargs)
         return TabPFNClassifier(**kwargs)
 
     if model_name == "tabicl":
@@ -45,7 +46,8 @@ def make_classifier(
                 "n_estimators": foundation_estimators,
                 "kv_cache": False,
                 "verbose": False,
-                "allow_auto_download": True,
+                "allow_auto_download": model_path is None,
+                "model_path": model_path,
                 "n_jobs": None,
             },
         )
