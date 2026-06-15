@@ -631,3 +631,20 @@ def normalize_args(args: argparse.Namespace) -> argparse.Namespace:
     if args.model_path == "":
         args.model_path = None
     return args
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run one model on one selected TALENT dataset.")
+    add_common_arguments(
+        parser,
+        default_dataset_dir=PROJECT_ROOT / "data" / "selected_talent",
+        default_model="lightgbm",
+        default_experiment_axis="unknown_axis",
+        default_scale_group="unknown_group",
+    )
+    output_dir = run_experiment(normalize_args(parser.parse_args()))
+    print(f"Results saved to {output_dir}")
+
+
+if __name__ == "__main__":
+    main()
