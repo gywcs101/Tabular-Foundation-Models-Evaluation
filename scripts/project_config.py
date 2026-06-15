@@ -5,8 +5,22 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data" / "openml_cache"
+SELECTED_TALENT_DIR = PROJECT_ROOT / "data" / "selected_talent"
 RESULTS_DIR = PROJECT_ROOT / "results"
 FIGURES_DIR = RESULTS_DIR / "figures"
+LOCAL_ENVS_DIR = PROJECT_ROOT / ".local_envs"
+LOCAL_MODELS_DIR = PROJECT_ROOT / ".local_models"
+LOCAL_EXTERNAL_DIR = PROJECT_ROOT / ".local_external"
+TABICL_MODEL_PATH = LOCAL_MODELS_DIR / "tabicl" / "tabicl-classifier-v2-20260212.ckpt"
+TABPFN_MODEL_PATH = (
+    LOCAL_MODELS_DIR / "tabpfn" / "tabpfn-v2-classifier-finetuned-zk73skhh.ckpt"
+)
+TABICL_PYTHON = LOCAL_ENVS_DIR / "tabicl" / "python.exe"
+TABPFN_PYTHON = LOCAL_ENVS_DIR / "tabpfn" / "python.exe"
+LIGHTGBM_PYTHON = LOCAL_ENVS_DIR / "lightgbm" / "python.exe"
+XGBOOST_PYTHON = LOCAL_ENVS_DIR / "xgboost" / "python.exe"
+LOCAL_TALENT_ROOT = LOCAL_EXTERNAL_DIR / "TALENT-tabular-benchmark"
+LOCAL_TABARENA_ROOT = LOCAL_EXTERNAL_DIR / "tabarena"
 TARGET_COLUMN = "__target__"
 RANDOM_STATE = 42
 

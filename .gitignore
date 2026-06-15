@@ -10,15 +10,16 @@ __pycache__/
 .venv/
 venv/
 env/
+.local_envs/
+.local_external/
 
 # Downloaded datasets and OpenML cache
 data/openml_cache/**
 !data/openml_cache/
 !data/openml_cache/.gitkeep
-data/selected_talent/**
-!data/selected_talent/
 
 # Model weights and large artifacts
+.local_models/
 models/
 checkpoints/
 *.pt

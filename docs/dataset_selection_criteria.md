@@ -41,7 +41,8 @@ F3：100-300
 已对本机 TALENT 数据包进行统计：
 
 ```text
-路径：E:\Software_Download\TALENT-tabular-benchmark\benchmark_dataset\data
+原始 TALENT 数据包路径建议：.local_external\TALENT-tabular-benchmark\benchmark_dataset\data
+当前主实验已选数据路径：data\selected_talent
 总数据集数量：300
 分类数据集数量：181
 二分类：101

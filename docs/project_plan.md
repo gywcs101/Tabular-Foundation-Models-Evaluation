@@ -294,21 +294,22 @@ docs/dataset_selection_criteria.md
 
 成员 A：
 
-- TabPFN v2
-- LightGBM
-- XGBoost
-- TALENT 数据准备
-- 主实验结果表
+- 在自己的电脑上完整运行一遍 `data/selected_talent/` 中的全部主实验数据集。
+- 覆盖 TabPFN v2、TabICL、LightGBM、XGBoost 四个模型。
+- 运行完成后提交自己的 `results/raw/` 结果目录。
+- 记录本机 CPU、内存、运行时间和失败情况。
 
 成员 B：
 
-- TabICL
-- 样本数扩展性和特征数扩展性实验
-- 缺失值实验
-- retrieval-based in-context learning
+- 在自己的电脑上完整运行一遍 `data/selected_talent/` 中的全部主实验数据集。
+- 覆盖 TabPFN v2、TabICL、LightGBM、XGBoost 四个模型。
+- 运行完成后提交自己的 `results/raw/` 结果目录。
+- 记录本机 CPU、内存、运行时间和失败情况。
 
 共同完成：
 
+- 对比两台电脑上的重复运行结果，检查结论是否稳定。
+- 合并两人的 `results/raw/` 为 `results/final/final_metrics.csv`。
 - 报告结论
 - 图表解释
 - PPT

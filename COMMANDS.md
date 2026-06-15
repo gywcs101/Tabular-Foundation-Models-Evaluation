@@ -6,42 +6,45 @@
 cd "D:\Codex项目\人工智能2大作业"
 ```
 
-## Python 与环境检查
+## 本地目录约定
 
-检查 Anaconda Python：
-
-```powershell
-& "E:\Software_Download\Anaconda\python.exe" --version
+```text
+.local_envs\      本地 Conda 环境，不上传 GitHub
+.local_models\    本地模型权重，不上传 GitHub
+.local_external\  完整 TALENT/TabArena 等外部资源，不上传 GitHub
+data\selected_talent\  已筛选实验数据，上传 GitHub
 ```
+
+## Python 与环境检查
 
 检查 TabPFN 环境：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabpfn\python.exe" -c "import tabpfn, torch, sklearn, pandas, numpy; print('tabpfn ok')"
+& ".\.local_envs\tabpfn\python.exe" -c "import tabpfn, torch, sklearn, pandas, numpy; print('tabpfn ok')"
 ```
 
 检查 TabICL 环境：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabicl\python.exe" -c "import tabicl, torch, sklearn, numpy; print('tabicl ok')"
+& ".\.local_envs\tabicl\python.exe" -c "import tabicl, torch, sklearn, numpy; print('tabicl ok')"
 ```
 
 检查 XGBoost 环境：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\xgboost\python.exe" -c "import xgboost, sklearn, pandas, numpy; print('xgboost ok', xgboost.__version__)"
+& ".\.local_envs\xgboost\python.exe" -c "import xgboost, sklearn, pandas, numpy; print('xgboost ok', xgboost.__version__)"
 ```
 
 检查 LightGBM 环境：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\lightgbm\python.exe" -c "import lightgbm, sklearn, pandas, numpy; print('lightgbm ok', lightgbm.__version__)"
+& ".\.local_envs\lightgbm\python.exe" -c "import lightgbm, sklearn, pandas, numpy; print('lightgbm ok', lightgbm.__version__)"
 ```
 
-检查本机模型环境、TALENT 数据和 TabArena 元数据：
+检查本机模型环境、权重和数据：
 
 ```powershell
-& "E:\Software_Download\Anaconda\python.exe" scripts\check_local_assets.py
+python scripts\check_local_assets.py
 ```
 
 ## 查看 TALENT `.npy` 数据
@@ -72,77 +75,110 @@ python data\inspect_npy.py data\selected_talent\feature_scale\F1_6_20\mfeat-morp
 
 ## 当前单次实验
 
-运行 TabICL 在 `mfeat-morphological` 上的实验，默认使用 `train + val` 作为上下文/训练样本，`test` 作为测试集：
+### 样本数扩展性：pc1
+
+`pc1_1109rows_21feat_binclass` 属于样本数扩展性 A 组，路径是：
+
+```text
+data\selected_talent\sample_scale\A_1000_3000\pc1_1109rows_21feat_binclass
+```
+
+运行 TabICL 在 `pc1` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py
+& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_pc1.py
+```
+
+运行 TabPFN 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_pc1.py
+```
+
+运行 LightGBM 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_pc1.py
+```
+
+运行 XGBoost 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_pc1.py
+```
+
+### 特征数扩展性：mfeat 示例
+
+运行 TabICL 在 `mfeat-morphological` 上的实验：
+
+```powershell
+& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py
 ```
 
 如果只使用 `train`，不合并 `val`：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py --no-use-val-in-train
+& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py --no-use-val-in-train
 ```
 
-运行 TabPFN 在 `mfeat-morphological` 上的实验，默认使用本地权重：
+运行 TabPFN 在 `mfeat-morphological` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_morphological.py
-```
-
-如果想手动指定 TabPFN 权重路径：
-
-```powershell
-& "E:\Software_Download\Anaconda\envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_morphological.py --model-path "E:\Software_Download\TabPFN_models\tabpfn-v2-classifier-finetuned-zk73skhh.ckpt"
+& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_morphological.py
 ```
 
 运行 LightGBM 在 `mfeat-morphological` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_morphological.py
+& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_morphological.py
 ```
 
 运行 XGBoost 在 `mfeat-morphological` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\xgboost\python.exe" scripts\run_xgboost_mfeat_morphological.py
+& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_mfeat_morphological.py
 ```
 
-运行 TabICL 在 `mfeat-pixel` 上的实验，默认使用 `train + val` 作为上下文/训练样本，`test` 作为测试集：
+运行 TabICL 在 `mfeat-pixel` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabicl\python.exe" scripts\run_tabicl_mfeat_pixel.py
+& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_pixel.py
 ```
 
-运行 TabPFN 在 `mfeat-pixel` 上的实验，默认使用本地权重：
+运行 TabPFN 在 `mfeat-pixel` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_pixel.py
+& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_pixel.py
 ```
 
 运行 LightGBM 在 `mfeat-pixel` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_pixel.py
+& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_pixel.py
 ```
 
 运行 XGBoost 在 `mfeat-pixel` 上的实验：
 
 ```powershell
-& "E:\Software_Download\Anaconda\envs\xgboost\python.exe" scripts\run_xgboost_mfeat_pixel.py
+& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_mfeat_pixel.py
 ```
 
-旧试跑结果已经清空。正式实验脚本更新后，结果将保存到：
+## 结果位置
+
+正式实验结果保存到：
 
 ```text
-results\raw\tabpfn\feature_scale\F1_6_20\mfeat-morphological_2000rows_6feat_multiclass\<run_id>\
-results\raw\tabicl\feature_scale\F1_6_20\mfeat-morphological_2000rows_6feat_multiclass\<run_id>\
-results\raw\lightgbm\feature_scale\F1_6_20\mfeat-morphological_2000rows_6feat_multiclass\<run_id>\
-results\raw\xgboost\feature_scale\F1_6_20\mfeat-morphological_2000rows_6feat_multiclass\<run_id>\
-results\raw\tabpfn\feature_scale\F3_100_300\mfeat-pixel_2000rows_240feat_multiclass\<run_id>\
-results\raw\tabicl\feature_scale\F3_100_300\mfeat-pixel_2000rows_240feat_multiclass\<run_id>\
-results\raw\lightgbm\feature_scale\F3_100_300\mfeat-pixel_2000rows_240feat_multiclass\<run_id>\
-results\raw\xgboost\feature_scale\F3_100_300\mfeat-pixel_2000rows_240feat_multiclass\<run_id>\
+results\raw\{model}\{experiment_axis}\{scale_group}\{dataset_name}\{run_id}\
+```
+
+每个结果目录包含：
+
+```text
+metrics.csv
+run_config.json
+predictions.csv
+confusion_matrix.csv
+run.log
 ```
 
 ## 原有通用实验脚本

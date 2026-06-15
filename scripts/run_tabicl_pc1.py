@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+import argparse
+
+from project_config import PROJECT_ROOT, TABICL_MODEL_PATH
+from run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
+
+
+DEFAULT_PC1_DATASET_DIR = (
+    PROJECT_ROOT
+    / "data"
+    / "selected_talent"
+    / "sample_scale"
+    / "A_1000_3000"
+    / "pc1_1109rows_21feat_binclass"
+)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run TabICL on the pc1 TALENT dataset.")
+    add_common_arguments(
+        parser,
+        default_dataset_dir=DEFAULT_PC1_DATASET_DIR,
+        default_model="tabicl",
+        default_experiment_axis="sample_scale",
+        default_scale_group="A_1000_3000",
+        default_model_path=str(TABICL_MODEL_PATH),
+    )
+    run_experiment(normalize_args(parser.parse_args()))
+
+
+if __name__ == "__main__":
+    main()

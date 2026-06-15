@@ -9,11 +9,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from project_config import LOCAL_TABARENA_ROOT, LOCAL_TALENT_ROOT, TABICL_PYTHON, TABPFN_PYTHON
 
-DEFAULT_TALENT_ROOT = Path(r"E:\Software_Download\TALENT-tabular-benchmark")
-DEFAULT_TABARENA_ROOT = Path(r"E:\Software_Download\tabarena")
-DEFAULT_TABPFN_PYTHON = Path(r"E:\Software_Download\Anaconda\envs\tabpfn\python.exe")
-DEFAULT_TABICL_PYTHON = Path(r"E:\Software_Download\Anaconda\envs\tabicl\python.exe")
+DEFAULT_TALENT_ROOT = LOCAL_TALENT_ROOT
+DEFAULT_TABARENA_ROOT = LOCAL_TABARENA_ROOT
+DEFAULT_TABPFN_PYTHON = TABPFN_PYTHON
+DEFAULT_TABICL_PYTHON = TABICL_PYTHON
 
 
 def status(ok: bool) -> str:

@@ -17,7 +17,12 @@ GitHub 仓库只保存轻量、可复现、适合协作的内容：
 - Python/Conda 环境，例如 `.conda/`
 - OpenML 原始下载缓存，例如 `data/openml_cache/`
 - TabPFN、TabICL、PyTorch 等模型权重
+- 完整 TALENT 原始包和 TabArena 外部仓库，例如 `.local_external/`
 - 大型中间结果、临时图表、缓存文件
+
+上传：
+
+- 已筛选的小型实验数据：`data/selected_talent/`
 
 原因：
 
@@ -48,13 +53,13 @@ env_lightgbm -> LightGBM
 - 不能一个命令跑完所有模型。
 - 需要统一结果格式，最后再合并。
 
-当前本机路径示例：
+项目内本地路径约定：
 
 ```text
-E:\Software_Download\Anaconda\envs\tabpfn
-E:\Software_Download\Anaconda\envs\tabicl
-E:\Software_Download\Anaconda\envs\xgboost
-E:\Software_Download\Anaconda\envs\lightgbm
+.local_envs/tabpfn
+.local_envs/tabicl
+.local_envs/xgboost
+.local_envs/lightgbm
 ```
 
 ## 3. 依赖安装
@@ -135,18 +140,31 @@ error_message
 
 ## 5. 本地模型和数据
 
-模型各自保存在本地，不上传 GitHub。
+模型各自保存在项目内本地目录，不上传 GitHub。
 
-当前本机数据路径示例：
+推荐权重路径：
 
 ```text
-E:\Software_Download\TALENT-tabular-benchmark
-E:\Software_Download\tabarena
+.local_models/tabicl/tabicl-classifier-v2-20260212.ckpt
+.local_models/tabpfn/tabpfn-v2-classifier-finetuned-zk73skhh.ckpt
 ```
 
-TALENT 数据包可直接作为实验数据来源。TabArena 当前是源码仓库和元数据，适合参考数据集列表和评测思路，不等于完整可训练数据缓存。
+当前主实验数据直接使用仓库中的：
 
-OpenML、TALENT、TabArena 原始数据都不上传 GitHub。只要脚本中固定：
+```text
+data/selected_talent/
+```
+
+完整 TALENT 原始包和 TabArena 仓库可选放在：
+
+```text
+.local_external/TALENT-tabular-benchmark
+.local_external/tabarena
+```
+
+它们不上传 GitHub。当前主实验不依赖完整原始包，只依赖 `data/selected_talent/`。
+
+只要脚本中固定：
 
 - 数据集名称或 OpenML id
 - 数据集版本
@@ -167,6 +185,9 @@ git status --short
 
 ```text
 .conda/
+.local_envs/
+.local_models/
+.local_external/
 data/openml_cache/
 __pycache__/
 *.pt
