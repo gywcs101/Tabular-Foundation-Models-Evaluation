@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
 
-from project_config import PROJECT_ROOT, TABICL_MODEL_PATH
-from run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
+PROJECT_ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[3]
+if str(PROJECT_ROOT_FOR_IMPORTS / "scripts") not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT_FOR_IMPORTS / "scripts"))
+
+
+from project_config import PROJECT_ROOT
+from core.run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
 
 
 DEFAULT_PC1_DATASET_DIR = (
@@ -17,14 +24,13 @@ DEFAULT_PC1_DATASET_DIR = (
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run TabICL on the pc1 TALENT dataset.")
+    parser = argparse.ArgumentParser(description="Run XGBoost on the pc1 TALENT dataset.")
     add_common_arguments(
         parser,
         default_dataset_dir=DEFAULT_PC1_DATASET_DIR,
-        default_model="tabicl",
+        default_model="xgboost",
         default_experiment_axis="sample_scale",
         default_scale_group="A_1000_3000",
-        default_model_path=str(TABICL_MODEL_PATH),
     )
     run_experiment(normalize_args(parser.parse_args()))
 

@@ -99,7 +99,7 @@ data\selected_talent
 - 数据集筛选遵守 `docs/dataset_selection_criteria.md`：当前保留样本数扩展性的轻量方案和稳健方案，待用户审核后定稿。
 - 样本数扩展性候选以 `pc1`、`kc1`、`sylvine`、`ringnorm`、`jm1`、`default_of_credit_card_clients` 为主，目标是让特征数尽量接近。
 - 特征数扩展性候选以 `mfeat-morphological`、`mfeat-zernike`、`mfeat-karhunen`、`mfeat-fourier`、`mfeat-factors`、`mfeat-pixel` 为主，目标是让样本数尽量固定在 2000 行附近。
-- 后续结果统一写入 `results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/`，再合并到 `results/final/`。
+- 后续结果统一写入 `results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/`，再合并到 `results/final/`。
 - 结果分析口径已统一为：`accuracy`、`balanced_accuracy`、`macro_f1`、置信度指标、时间/峰值内存指标、实验状态和扩展性派生指标。
 - 单次实验能计算出的数字必须当场写入 `metrics.csv`，包括置信度指标、`wall_time_seconds`、`peak_memory_mb`、`training_throughput`。
 - `peak_memory_mb` 计划使用 `psutil` 后台采样当前 Python 进程 RSS 峰值。

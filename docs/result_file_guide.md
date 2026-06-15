@@ -9,18 +9,19 @@
 单次实验结果建议保存到：
 
 ```text
-results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
+results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
 ```
 
 示例：
 
 ```text
-results/raw/tabicl/feature_scale/F1_6_20/mfeat-morphological_2000rows_6feat_multiclass/run_20260609_201500/
+results/raw/gywcs101/tabicl/feature_scale/F1_6_20/mfeat-morphological_2000rows_6feat_multiclass/run_20260609_201500/
 ```
 
 这样安排的好处是：
 
 - `raw` 表示这是原始单次实验结果，不是最终汇总表。
+- `runner_name` 表示是谁跑的这一批结果。
 - 按模型分文件夹，方便两名成员分工跑实验。
 - 按实验轴和规模组分文件夹，方便后续画样本量/特征量扩展性图。
 - 每次运行有独立 `run_id`，不会覆盖之前结果。

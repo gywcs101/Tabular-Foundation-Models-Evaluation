@@ -243,7 +243,7 @@ docs/dataset_selection_criteria.md
 - `docs/` 保存策划案和文献笔记。
 - `scripts/` 保存实验脚本。
 - `data/` 保存下载缓存，不建议提交大数据文件。
-- `results/raw/` 保存单次实验目录，每次运行包含 `metrics.csv`、`run_config.json`、`predictions.csv`、`confusion_matrix.csv`、`run.log`。
+- `results/raw/` 保存单次实验目录，路径格式为 `results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/`，每次运行包含 `metrics.csv`、`run_config.json`、`predictions.csv`、`confusion_matrix.csv`、`run.log`。
 - `results/final/` 保存合并后的总表和跨实验统计，例如 `final_metrics.csv`、`scalability_alpha.csv`。
 - `results/figures/` 保存最终图表。
 - `report/` 保存最终报告。
@@ -263,7 +263,7 @@ docs/dataset_selection_criteria.md
 第 2 周：主实验
 
 - 完成样本数扩展性和特征数扩展性候选数据集的主实验。
-- 生成第一版 `results/raw/{model}/.../metrics.csv`，并合并为 `results/final/final_metrics.csv`。
+- 生成第一版 `results/raw/{runner_name}/{model}/.../metrics.csv`，并合并为 `results/final/final_metrics.csv`。
 - 记录所有成功和失败情况。
 
 第 3 周：扩展性实验

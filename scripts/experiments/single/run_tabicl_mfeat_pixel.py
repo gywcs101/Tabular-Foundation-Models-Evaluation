@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
+
+PROJECT_ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[3]
+if str(PROJECT_ROOT_FOR_IMPORTS / "scripts") not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT_FOR_IMPORTS / "scripts"))
+
 
 from project_config import PROJECT_ROOT, TABICL_MODEL_PATH
-from run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
+from core.run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
 
 
 DEFAULT_PIXEL_DATASET_DIR = (

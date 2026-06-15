@@ -93,7 +93,7 @@ python -m pip install -r requirements.txt
 两名成员不要直接同时修改同一个汇总表。建议每次实验输出到独立运行目录：
 
 ```text
-results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
+results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
 ```
 
 整理后再合并成：

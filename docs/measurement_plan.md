@@ -168,7 +168,7 @@ log(T) = alpha * log(N) + C
 单次实验结果目录建议为：
 
 ```text
-results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
+results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
 ```
 
 每次运行保存 4 个核心文件：
@@ -193,6 +193,7 @@ run.log
 必须包含：
 
 - 数据集标识：`dataset`、`experiment_axis`、`scale_group`
+- 运行者标识：`runner_name`
 - 模型标识：`model`、`device`、`model_path`
 - 数据规模：`fit_rows`、`test_rows`、`total_rows`、`n_features`
 - 正确率指标：`accuracy`、`balanced_accuracy`、`macro_f1`
@@ -282,7 +283,7 @@ run.log
 - 增加 `mean_confidence`、`correct_mean_confidence`、`wrong_mean_confidence`、`confidence_gap`。
 - 增加 `training_throughput`。
 - 在 `predictions.csv` 中增加 `confidence`。
-- 将结果输出到 `results/raw/{model}/...`。
+- 将结果输出到 `results/raw/{runner_name}/{model}/...`。
 - 保证失败时也写出 `metrics.csv`、`run_config.json` 和 `run.log`。
 
 ## 8. 总结

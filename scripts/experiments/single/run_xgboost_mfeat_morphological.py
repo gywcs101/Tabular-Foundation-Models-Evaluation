@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
 
-from run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
-from run_tabicl_mfeat_morphological import DEFAULT_DATASET_DIR
+PROJECT_ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[3]
+if str(PROJECT_ROOT_FOR_IMPORTS / "scripts") not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT_FOR_IMPORTS / "scripts"))
+
+
+from core.run_talent_single_dataset import add_common_arguments, normalize_args, run_experiment
+from experiments.single.run_tabicl_mfeat_morphological import DEFAULT_DATASET_DIR
 
 
 def main() -> None:

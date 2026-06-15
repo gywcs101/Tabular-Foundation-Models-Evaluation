@@ -15,6 +15,44 @@ cd "D:\Codex项目\人工智能2大作业"
 data\selected_talent\  已筛选实验数据，上传 GitHub
 ```
 
+## 主实验：一键跑完
+
+用自己的名字区分结果。比如你的名字/ID 是 `gywcs101`：
+
+```powershell
+python scripts\controllers\run_all_selected_talent.py --runner-name gywcs101
+```
+
+同学可以换成自己的名字/ID：
+
+```powershell
+python scripts\controllers\run_all_selected_talent.py --runner-name teammate_name
+```
+
+只预览将要执行哪些实验，不真正运行：
+
+```powershell
+python scripts\controllers\run_all_selected_talent.py --runner-name gywcs101 --dry-run
+```
+
+只跑某几个模型：
+
+```powershell
+python scripts\controllers\run_all_selected_talent.py --runner-name gywcs101 --models tabicl,tabpfn
+```
+
+主实验结果保存到：
+
+```text
+results\raw\{runner_name}\{model}\{experiment_axis}\{scale_group}\{dataset_name}\{run_id}\
+```
+
+例如：
+
+```text
+results\raw\gywcs101\tabicl\sample_scale\A_1000_3000\pc1_1109rows_21feat_binclass\run_...\ 
+```
+
 ## Python 与环境检查
 
 检查 TabPFN 环境：
@@ -47,6 +85,58 @@ data\selected_talent\  已筛选实验数据，上传 GitHub
 python scripts\check_local_assets.py
 ```
 
+## 单次实验调试
+
+这些命令用于调试单个模型/单个数据集。主实验不需要一个个手动跑。
+
+运行 TabICL 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\tabicl\python.exe" scripts\experiments\single\run_tabicl_pc1.py --runner-name gywcs101
+```
+
+运行 TabPFN 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\tabpfn\python.exe" scripts\experiments\single\run_tabpfn_pc1.py --runner-name gywcs101
+```
+
+运行 LightGBM 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\lightgbm\python.exe" scripts\experiments\single\run_lightgbm_pc1.py --runner-name gywcs101
+```
+
+运行 XGBoost 在 `pc1` 上的实验：
+
+```powershell
+& ".\.local_envs\xgboost\python.exe" scripts\experiments\single\run_xgboost_pc1.py --runner-name gywcs101
+```
+
+运行 TabICL 在 `mfeat-morphological` 上的实验：
+
+```powershell
+& ".\.local_envs\tabicl\python.exe" scripts\experiments\single\run_tabicl_mfeat_morphological.py --runner-name gywcs101
+```
+
+运行 TabPFN 在 `mfeat-morphological` 上的实验：
+
+```powershell
+& ".\.local_envs\tabpfn\python.exe" scripts\experiments\single\run_tabpfn_mfeat_morphological.py --runner-name gywcs101
+```
+
+运行 LightGBM 在 `mfeat-morphological` 上的实验：
+
+```powershell
+& ".\.local_envs\lightgbm\python.exe" scripts\experiments\single\run_lightgbm_mfeat_morphological.py --runner-name gywcs101
+```
+
+运行 XGBoost 在 `mfeat-morphological` 上的实验：
+
+```powershell
+& ".\.local_envs\xgboost\python.exe" scripts\experiments\single\run_xgboost_mfeat_morphological.py --runner-name gywcs101
+```
+
 ## 查看 TALENT `.npy` 数据
 
 查看 `mfeat-morphological` 的训练特征：
@@ -67,109 +157,7 @@ python data\inspect_npy.py data\selected_talent\feature_scale\F1_6_20\mfeat-morp
 Print the complete array? Enter y or n:
 ```
 
-如果想把阈值改成 1000 行：
-
-```powershell
-python data\inspect_npy.py data\selected_talent\feature_scale\F1_6_20\mfeat-morphological_2000rows_6feat_multiclass\N_train.npy --max-rows 1000
-```
-
-## 当前单次实验
-
-### 样本数扩展性：pc1
-
-`pc1_1109rows_21feat_binclass` 属于样本数扩展性 A 组，路径是：
-
-```text
-data\selected_talent\sample_scale\A_1000_3000\pc1_1109rows_21feat_binclass
-```
-
-运行 TabICL 在 `pc1` 上的实验：
-
-```powershell
-& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_pc1.py
-```
-
-运行 TabPFN 在 `pc1` 上的实验：
-
-```powershell
-& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_pc1.py
-```
-
-运行 LightGBM 在 `pc1` 上的实验：
-
-```powershell
-& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_pc1.py
-```
-
-运行 XGBoost 在 `pc1` 上的实验：
-
-```powershell
-& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_pc1.py
-```
-
-### 特征数扩展性：mfeat 示例
-
-运行 TabICL 在 `mfeat-morphological` 上的实验：
-
-```powershell
-& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py
-```
-
-如果只使用 `train`，不合并 `val`：
-
-```powershell
-& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_morphological.py --no-use-val-in-train
-```
-
-运行 TabPFN 在 `mfeat-morphological` 上的实验：
-
-```powershell
-& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_morphological.py
-```
-
-运行 LightGBM 在 `mfeat-morphological` 上的实验：
-
-```powershell
-& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_morphological.py
-```
-
-运行 XGBoost 在 `mfeat-morphological` 上的实验：
-
-```powershell
-& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_mfeat_morphological.py
-```
-
-运行 TabICL 在 `mfeat-pixel` 上的实验：
-
-```powershell
-& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_mfeat_pixel.py
-```
-
-运行 TabPFN 在 `mfeat-pixel` 上的实验：
-
-```powershell
-& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_mfeat_pixel.py
-```
-
-运行 LightGBM 在 `mfeat-pixel` 上的实验：
-
-```powershell
-& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_mfeat_pixel.py
-```
-
-运行 XGBoost 在 `mfeat-pixel` 上的实验：
-
-```powershell
-& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_mfeat_pixel.py
-```
-
-## 结果位置
-
-正式实验结果保存到：
-
-```text
-results\raw\{model}\{experiment_axis}\{scale_group}\{dataset_name}\{run_id}\
-```
+## 结果文件
 
 每个结果目录包含：
 
@@ -181,37 +169,7 @@ confusion_matrix.csv
 run.log
 ```
 
-## 原有通用实验脚本
-
-运行通用 benchmark：
-
-```powershell
-python scripts\run_benchmark.py --datasets all --models all --sample-sizes 1000,3000,10000
-```
-
-样本数扩展性实验：
-
-```powershell
-python scripts\run_benchmark.py --datasets pc1,kc1,sylvine,ringnorm,jm1,default_of_credit_card_clients --models all --sample-sizes 1000,3000,10000,30000
-```
-
-特征数扩展性实验：
-
-```powershell
-python scripts\run_benchmark.py --datasets mfeat-morphological,mfeat-zernike,mfeat-karhunen,mfeat-fourier,mfeat-factors,mfeat-pixel --models all --sample-sizes 2000
-```
-
-缺失值鲁棒性实验：
-
-```powershell
-python scripts\run_missing_value_experiment.py
-```
-
-retrieval-based in-context learning 实验：
-
-```powershell
-python scripts\run_retrieval_icl_experiment.py
-```
+## 后处理脚本
 
 生成图表：
 

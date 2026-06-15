@@ -7,10 +7,15 @@ import os
 import platform
 import threading
 import time
+import sys
 from datetime import datetime
 from importlib import metadata
 from pathlib import Path
 from typing import Any
+
+SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
 import numpy as np
 from sklearn.impute import SimpleImputer
@@ -232,6 +237,7 @@ def write_confusion_matrix(path: Path, labels: list[str], matrix: np.ndarray) ->
 
 
 def result_directory(
+    runner_name: str,
     model: str,
     experiment_axis: str,
     scale_group: str,
@@ -242,6 +248,7 @@ def result_directory(
         PROJECT_ROOT
         / "results"
         / "raw"
+        / runner_name
         / model
         / experiment_axis
         / scale_group
@@ -296,7 +303,14 @@ def run_experiment(args: argparse.Namespace) -> Path:
     progress(f"Loading dataset metadata: {dataset_dir}")
     info = read_json(dataset_dir / "info.json")
     run_id = args.run_id or datetime.now().strftime("run_%Y%m%d_%H%M%S")
-    output_dir = result_directory(args.model, args.experiment_axis, args.scale_group, dataset_dir, run_id)
+    output_dir = result_directory(
+        args.runner_name,
+        args.model,
+        args.experiment_axis,
+        args.scale_group,
+        dataset_dir,
+        run_id,
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
     progress(f"Output folder: {output_dir}")
 
@@ -306,6 +320,7 @@ def run_experiment(args: argparse.Namespace) -> Path:
     memory_sampler.start()
     log_lines = [
         f"run_id={run_id}",
+        f"runner_name={args.runner_name}",
         f"start_time={start_wall}",
         f"dataset_dir={dataset_dir}",
         f"model={args.model}",
@@ -419,6 +434,7 @@ def run_experiment(args: argparse.Namespace) -> Path:
 
     metrics_row: dict[str, Any] = {
         "run_id": run_id,
+        "runner_name": args.runner_name,
         "timestamp": start_wall,
         "dataset": dataset_dir.name,
         "dataset_original_name": info.get("name", dataset_dir.name),
@@ -515,6 +531,7 @@ def run_experiment(args: argparse.Namespace) -> Path:
 
     run_config = {
         "run_id": run_id,
+        "runner_name": args.runner_name,
         "dataset": dataset_dir.name,
         "dataset_dir": str(dataset_dir),
         "dataset_info": info,
@@ -557,6 +574,7 @@ def run_experiment(args: argparse.Namespace) -> Path:
     log_lines.extend(
         [
             f"end_time={end_wall}",
+            f"runner_name={args.runner_name}",
             f"success={success}",
             f"fit_time_seconds={fit_time}",
             f"predict_time_seconds={predict_time}",
@@ -595,6 +613,7 @@ def add_common_arguments(
     parser.add_argument("--scale-group", default=default_scale_group)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--model-path", default=default_model_path or "")
+    parser.add_argument("--runner-name", default="default_runner")
     parser.add_argument("--seed", type=int, default=RANDOM_STATE)
     parser.add_argument("--foundation-estimators", type=int, default=8)
     parser.add_argument("--tree-estimators", type=int, default=300)

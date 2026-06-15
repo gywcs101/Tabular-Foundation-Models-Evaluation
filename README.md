@@ -72,19 +72,16 @@ cd "D:\Codex项目\人工智能2大作业"
 python scripts/check_local_assets.py
 ```
 
-运行单个数据集脚本，例如：
+一键运行全部 `data/selected_talent/` 主实验，例如你的名字/ID 是 `gywcs101`：
 
 ```powershell
-& ".\.local_envs\tabicl\python.exe" scripts\run_tabicl_pc1.py
-& ".\.local_envs\tabpfn\python.exe" scripts\run_tabpfn_pc1.py
-& ".\.local_envs\lightgbm\python.exe" scripts\run_lightgbm_pc1.py
-& ".\.local_envs\xgboost\python.exe" scripts\run_xgboost_pc1.py
+python scripts/controllers/run_all_selected_talent.py --runner-name gywcs101
 ```
 
 实验结果写入：
 
 ```text
-results/raw/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
+results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
 ```
 
 ## 重要说明
