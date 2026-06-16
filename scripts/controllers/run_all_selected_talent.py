@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import subprocess
 import sys
 from datetime import datetime
@@ -79,6 +80,7 @@ def run_one(
     scale_group: str,
     use_val_in_train: bool,
     dry_run: bool,
+    rerun_completed: bool,
 ) -> int:
     config = MODEL_CONFIGS[model]
     python_path: Path = config["python"]
@@ -103,6 +105,16 @@ def run_one(
     if not use_val_in_train:
         command.append("--no-use-val-in-train")
 
+    if not rerun_completed and has_successful_result(
+        runner_name=runner_name,
+        model=model,
+        experiment_axis=experiment_axis,
+        scale_group=scale_group,
+        dataset_name=dataset_dir.name,
+    ):
+        progress(f"Skip completed {runner_name} | {model} | {experiment_axis}/{scale_group}/{dataset_dir.name}")
+        return 0
+
     progress(f"Run {runner_name} | {model} | {experiment_axis}/{scale_group}/{dataset_dir.name}")
     if dry_run:
         print(" ".join(f'"{part}"' if " " in part else part for part in command))
@@ -119,11 +131,47 @@ def run_one(
     return completed.returncode
 
 
+def has_successful_result(
+    *,
+    runner_name: str,
+    model: str,
+    experiment_axis: str,
+    scale_group: str,
+    dataset_name: str,
+) -> bool:
+    result_root = (
+        PROJECT_ROOT
+        / "results"
+        / "raw"
+        / runner_name
+        / model
+        / experiment_axis
+        / scale_group
+        / dataset_name
+    )
+    if not result_root.exists():
+        return False
+    for metrics_path in result_root.glob("run_*/metrics.csv"):
+        try:
+            with metrics_path.open(newline="", encoding="utf-8") as file:
+                row = next(csv.DictReader(file), None)
+        except Exception:
+            continue
+        if row and str(row.get("success", "")).lower() == "true":
+            return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all selected TALENT datasets with all configured models.")
     parser.add_argument("--runner-name", required=True, help="Name of the person running this experiment batch.")
     parser.add_argument("--models", default="all", help="Comma-separated models or 'all'.")
     parser.add_argument("--dry-run", action="store_true", help="Print planned commands without running them.")
+    parser.add_argument(
+        "--rerun-completed",
+        action="store_true",
+        help="Run experiments even if a successful metrics.csv already exists.",
+    )
     parser.add_argument(
         "--use-val-in-train",
         action=argparse.BooleanOptionalAction,
@@ -157,6 +205,7 @@ def main() -> int:
                 scale_group=scale_group,
                 use_val_in_train=args.use_val_in_train,
                 dry_run=args.dry_run,
+                rerun_completed=args.rerun_completed,
             )
             if return_code != 0:
                 failures.append((model, dataset_dir, return_code))
