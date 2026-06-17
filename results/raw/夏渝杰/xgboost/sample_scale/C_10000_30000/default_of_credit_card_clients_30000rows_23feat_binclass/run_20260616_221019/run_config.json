@@ -1,0 +1,63 @@
+{
+  "run_id": "run_20260616_221019",
+  "runner_name": "XYJ",
+  "dataset": "default_of_credit_card_clients_30000rows_23feat_binclass",
+  "dataset_dir": "C:\\Users\\11575\\Desktop\\Tabular-Foundation-Models-Evaluation\\data\\selected_talent\\sample_scale\\C_10000_30000\\default_of_credit_card_clients_30000rows_23feat_binclass",
+  "dataset_info": {
+    "task_type": "binclass",
+    "num_classes": 2,
+    "n_num_features": 14,
+    "n_cat_features": 9,
+    "train_size": 19200,
+    "val_size": 4800,
+    "test_size": 6000,
+    "source": "https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients"
+  },
+  "model": "xgboost",
+  "experiment_axis": "sample_scale",
+  "scale_group": "C_10000_30000",
+  "random_seed": 42,
+  "device": "cpu",
+  "model_path": null,
+  "data_split": "TALENT original train/val/test",
+  "use_val_in_train": true,
+  "encoding": "talent_numeric_plus_ordinal_categorical",
+  "target_classes": [
+    "0",
+    "1"
+  ],
+  "feature_info": {
+    "n_numeric_features": 14,
+    "n_categorical_features": 9,
+    "n_features_after_preprocessing": 23
+  },
+  "categorical_feature_indices": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+  ],
+  "foundation_estimators": 8,
+  "tree_estimators": 300,
+  "memory_sample_interval_seconds": 0.05,
+  "memory_sampler_available": true,
+  "memory_sampler_backend": "psutil_rss",
+  "memory_sampler_error": "",
+  "python": "3.11.15",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "package_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "psutil": "7.2.2",
+    "scikit-learn": "1.9.0",
+    "tabicl": "unknown",
+    "tabpfn": "unknown",
+    "lightgbm": "unknown",
+    "xgboost": "3.2.0"
+  }
+}
