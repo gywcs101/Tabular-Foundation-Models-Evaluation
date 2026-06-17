@@ -169,19 +169,66 @@ confusion_matrix.csv
 run.log
 ```
 
-## 后处理脚本
+## 结果分析与绘图命令
 
-生成图表：
+游戏本结果还没跑完时，也可以先用现有轻薄本结果生成第一版分析表和图。等游戏本结果放入 `results/raw/` 后，重新运行同一条命令即可刷新。
 
-```powershell
-python scripts\analyze_results.py
-```
-
-合并两名成员结果：
+一键完整分析：
 
 ```powershell
-python scripts\merge_results.py
+python scripts\analysis\run_full_analysis.py
 ```
+
+只检查结果是否完整：
+
+```powershell
+python scripts\analysis\check_analysis_inputs.py
+```
+
+只合并结果并生成最终 CSV 表：
+
+```powershell
+python scripts\analysis\build_final_tables.py
+```
+
+单独生成预测性能图：
+
+```powershell
+python scripts\analysis\plot_performance.py
+```
+
+单独生成扩展性和时间图：
+
+```powershell
+python scripts\analysis\plot_scalability.py
+```
+
+单独生成峰值内存图：
+
+```powershell
+python scripts\analysis\plot_memory.py
+```
+
+单独生成置信度图：
+
+```powershell
+python scripts\analysis\plot_confidence.py
+```
+
+单独生成混淆矩阵图：
+
+```powershell
+python scripts\analysis\plot_confusion_matrices.py
+```
+
+主要输出位置：
+
+```text
+results/final/
+results/figures/
+```
+
+正式图表会同时保存为 `.png` 和 `.svg`。
 
 离线冒烟测试：
 

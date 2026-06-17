@@ -97,3 +97,4 @@ results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}
 - TALENT 数据集筛选准则：`docs/dataset_selection_criteria.md`
 - 仓库结构说明：`docs/repository_structure.md`
 - 实验测量计划：`docs/measurement_plan.md`
+- 数据分析与绘图计划：`docs/data_analysis_visualization_plan.md`
