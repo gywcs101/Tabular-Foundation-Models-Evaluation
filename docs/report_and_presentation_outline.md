@@ -1,6 +1,6 @@
 # Final Report and 15-Minute Presentation Outline
 
-This document defines the planned structure of the English final report and the 15-minute group presentation. Because the gaming-laptop results have not arrived yet, the conclusions below are written as "current evidence" and "likely final message" rather than fixed final claims.
+This document defines the planned structure of the English final report and the 15-minute group presentation. The current analysis includes five completed result sets: two light-laptop runs and three gaming-laptop runs.
 
 ## Required First Page
 
@@ -83,6 +83,12 @@ log(T) = alpha * log(N) + C
 
 where `T` is time or memory cost, and `N` is sample size or feature count.
 
+Recommended interpretation of `alpha`:
+
+- Use `alpha` as an empirical scalability indicator, not as a theoretical complexity proof.
+- In the main report, prioritize time-based `alpha`, especially for sample-size scalability.
+- Use memory `alpha` only as appendix or supporting analysis. Peak-memory bar charts are more intuitive and more reliable for the main text because memory readings are sensitive to runtime state, model caching, and Python process overhead.
+
 Recommended figures/tables:
 
 - `results/final/input_completeness_report.csv`
@@ -161,8 +167,9 @@ Models:
 
 Current hardware:
 
-- Two light laptops have completed all experiments.
-- Gaming-laptop results will later be added for stronger device comparison.
+- Two light laptops and three gaming laptops have completed the experiment set.
+- Each result set covers 48 model-dataset runs: 4 models times 12 selected datasets.
+- One gaming-laptop result directory contains duplicate successful LightGBM/XGBoost runs, but the analysis pipeline keeps the latest successful run for each model-dataset pair. The final metrics table has no duplicate rows.
 
 Recommended tables:
 
@@ -228,17 +235,15 @@ Recommended figures:
 - `sample_scale_predict_time_seconds_line_by_device.png`
 - `sample_scale_wall_time_seconds_line_by_device.png`
 - `sample_scale_peak_memory_bar_by_device.png`
-- `scalability_loglog_time.png`
+- `sample_scale_loglog_time.png`
+- Optional appendix: `sample_scale_loglog_memory.png`
 
 Current evidence:
 
 - TabICL and TabPFN remain competitive in accuracy, but their prediction time grows much faster with sample size.
 - LightGBM and XGBoost are much faster on CPU.
-- Current fitted time scaling exponents for sample-scale predict time:
-  - TabPFN: alpha about 1.65
-  - TabICL: alpha about 1.50
-  - LightGBM: alpha about 0.70
-  - XGBoost: alpha about 0.30
+- The time-based scalability exponent should be reported as an empirical trend. It supports the claim that foundation-model runtime grows faster with sample size than tree baselines.
+- The memory-based scalability exponent should not be a main-text claim; use the peak-memory bar chart for memory discussion.
 
 Likely final message:
 
@@ -258,13 +263,16 @@ Recommended figures:
 - `feature_scale_predict_time_seconds_line_by_device.png`
 - `feature_scale_wall_time_seconds_line_by_device.png`
 - `feature_scale_peak_memory_bar_by_device.png`
-- `scalability_loglog_memory.png`
+- `feature_scale_loglog_time.png`
+- Optional appendix: `feature_scale_loglog_memory.png`
 
 Current evidence:
 
 - TabICL and TabPFN generally perform strongly on mfeat feature-scale datasets.
 - Their prediction and wall time increase with feature count.
 - LightGBM and XGBoost remain very fast, and their memory stays nearly flat.
+- Time-based `alpha` can be shown as a supplementary scalability indicator for feature count, but the report should avoid presenting it as a theoretical complexity estimate because the six mfeat datasets differ in feature representation, not only feature count.
+- Memory `alpha` is not recommended for the main report. Use peak-memory bars instead.
 
 Likely final message:
 
@@ -306,13 +314,16 @@ Recommended figures:
 Recommended use:
 
 - Do not put all 8 confusion matrices in the main report unless space allows.
-- In the report, choose 2-4 representative matrices.
+- In the report, choose 2-4 representative matrices only if they support a concrete error-pattern conclusion.
 - In the appendix, include the remaining matrices.
 
 Current likely message:
 
 - Confusion matrices are more informative for multiclass digit-recognition datasets than for binary yes/no datasets.
-- The diagonal dominance shows overall success; off-diagonal cells reveal specific label confusions.
+- The heatmaps should not be used merely to show diagonal dominance; accuracy and macro F1 already show that.
+- The useful conclusion should focus on specific off-diagonal confusions. For example, low-dimensional mfeat variants may repeatedly confuse visually or morphologically similar digit classes across several model families.
+- If the same confusion pair appears across TabICL, TabPFN, LightGBM, and XGBoost, interpret it primarily as a dataset or feature-representation limitation rather than a weakness of a single model.
+- If the confusion largely disappears in `mfeat-pixel`, use that as evidence that richer feature representation reduces multiclass ambiguity.
 
 #### 5.6 Hardware Sensitivity
 
@@ -323,9 +334,9 @@ Question:
 Current status:
 
 - Light-laptop data from both members is complete.
-- Gaming-laptop data is pending.
+- Gaming-laptop data from three additional result sets is complete.
 
-Recommended figures after gaming-laptop results arrive:
+Recommended figures:
 
 - `sample_scale_predict_time_seconds_line_by_device.png`
 - `feature_scale_predict_time_seconds_line_by_device.png`
@@ -335,7 +346,7 @@ Recommended figures after gaming-laptop results arrive:
 - `feature_scale_peak_memory_bar_by_device.png`
 - `results/final/device_consistency.csv`
 
-Likely final message after gaming-laptop results:
+Likely final message:
 
 - Accuracy should remain almost unchanged across devices because the model and data split are the same.
 - Time and memory are hardware-sensitive, so they should be shown by device rather than averaged blindly.
@@ -357,13 +368,14 @@ Expected final points:
 - Scalability must be evaluated separately for sample size and feature count; otherwise, the reason behind cost growth is unclear.
 - Confidence analysis shows that correct predictions tend to be more confident than wrong predictions, but confidence alone cannot fully explain errors.
 - A practical lesson: under limited compute, tabular foundation models are attractive for accuracy-focused experiments, but tree baselines are still difficult to beat in efficiency.
+- Confusion matrices should be used selectively: they are valuable only when they reveal concrete error pairs, especially in multiclass digit-recognition datasets.
 
 Limitations:
 
 - Dataset selection is representative, not exhaustive.
 - Only classification tasks are included.
 - No model fine-tuning is performed.
-- Current analysis is based on light-laptop results; gaming-laptop results will strengthen hardware comparison.
+- Hardware comparison uses two device classes, but the devices are not laboratory-controlled machines. Timing results should therefore be interpreted as practical runtime evidence rather than exact hardware benchmarking.
 
 Future work:
 
@@ -382,13 +394,16 @@ Future work:
 | Evaluation 5.1 | `performance_macro_f1_by_dataset.png` | Show dataset-level variation |
 | Evaluation 5.2 | `sample_scale_macro_f1_line.png` | Performance across sample sizes |
 | Evaluation 5.2 | `sample_scale_predict_time_seconds_line_by_device.png` | Sample-size time cost |
+| Evaluation 5.2 | `sample_scale_loglog_time.png` | Empirical sample-size runtime scalability |
 | Evaluation 5.2 | `sample_scale_peak_memory_bar_by_device.png` | Sample-size memory cost |
 | Evaluation 5.3 | `feature_scale_macro_f1_line.png` | Performance across feature counts |
 | Evaluation 5.3 | `feature_scale_predict_time_seconds_line_by_device.png` | Feature-count time cost |
+| Evaluation 5.3 | `feature_scale_loglog_time.png` | Empirical feature-count runtime scalability |
 | Evaluation 5.3 | `feature_scale_peak_memory_bar_by_device.png` | Feature-count memory cost |
 | Evaluation 5.4 | `confidence_correct_vs_wrong.png` | Confidence reliability |
-| Evaluation 5.5 | selected multiclass confusion matrices | Error pattern analysis |
+| Evaluation 5.5 | selected multiclass confusion matrices | Error pattern analysis only if concrete off-diagonal confusions are discussed |
 | Appendix | all generated figures | Full evidence |
+| Appendix | `sample_scale_loglog_memory.png`, `feature_scale_loglog_memory.png` | Supplementary memory scaling trends |
 
 ## 15-Minute Presentation Structure
 
@@ -516,6 +531,7 @@ Figures:
 
 - `sample_scale_macro_f1_line.png`
 - `sample_scale_predict_time_seconds_line_by_device.png`
+- Optional: `sample_scale_loglog_time.png`
 
 ### Slide 9. Feature-Count Scalability
 
@@ -531,6 +547,7 @@ Figures:
 
 - `feature_scale_macro_f1_line.png`
 - `feature_scale_predict_time_seconds_line_by_device.png`
+- Optional: `feature_scale_loglog_time.png`
 
 ### Slide 10. Memory Cost
 
@@ -564,7 +581,7 @@ Figure:
 
 Main message:
 
-- Multiclass digit datasets reveal specific error patterns better than binary datasets.
+- Multiclass digit datasets are useful only if we discuss concrete off-diagonal error patterns.
 
 Time:
 
@@ -578,6 +595,12 @@ Recommended choice:
 
 - `confusion_matrix_tabicl_mfeat-morphological_2000rows_6feat_multiclass.png`
 - `confusion_matrix_xgboost_mfeat-morphological_2000rows_6feat_multiclass.png`
+
+Speaker note:
+
+- Do not simply say "the diagonal is strong." Instead, identify the largest off-diagonal confusions and explain whether they are shared by multiple models.
+- Shared confusion across multiple model families should be framed as a feature-representation or dataset ambiguity issue.
+- A comparison with `mfeat-pixel` can support the point that richer features reduce some digit-class confusions.
 
 ### Slide 13. What We Learned
 
@@ -622,19 +645,12 @@ The talk should not be "we ran many models and here are many charts." A clearer 
 5. The cost grows especially with sample size for TabPFN and TabICL.
 6. Therefore, the practical answer is nuanced: use foundation models when accuracy matters and the dataset size is manageable; keep LightGBM/XGBoost as strong efficiency baselines.
 
-## What Must Wait for Gaming-Laptop Results
+## Finalization Notes After Gaming-Laptop Results
 
-Do not finalize these claims until gaming-laptop results are added:
+The report can now use both light-laptop and gaming-laptop results. However:
 
-- Exact hardware speedup from light laptop to gaming laptop.
-- Whether gaming laptops reduce TabICL/TabPFN latency enough to change the practical recommendation.
-- Final form of device-comparison plots.
-- Any claim that averages timing results across device classes.
-
-Safe claims before gaming-laptop results:
-
-- Accuracy comparison across models on current selected datasets.
-- Relative CPU cost on light laptops.
-- Sample-size and feature-count scalability trends in the current light-laptop setting.
-- Confidence and multiclass confusion-matrix observations.
+- Accuracy should be summarized across all result sets because the same data splits are used and the values should be stable.
+- Time and memory should be shown by device class. Do not blindly average light-laptop and gaming-laptop timing into a single number when making hardware claims.
+- If the gaming-laptop results reduce runtime but do not change the relative ranking, the final conclusion should emphasize that better hardware improves practicality but does not remove the accuracy-cost trade-off.
+- For duplicated successful runs, the analysis uses the latest successful run per runner, model, dataset, and scale group.
 

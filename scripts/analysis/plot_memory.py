@@ -20,6 +20,12 @@ from analysis_utils import (
 )
 
 
+AXIS_SPECS = {
+    "sample_scale": ("fit_rows", "Sample scaling", "Samples"),
+    "feature_scale": ("n_features", "Feature scaling", "Features"),
+}
+
+
 def plot_memory_bar(df: pd.DataFrame, axis: str, output_name: str, title: str) -> None:
     plot_df = df[df["experiment_axis"] == axis].copy()
     if plot_df.empty:
@@ -41,6 +47,7 @@ def plot_memory_bar(df: pd.DataFrame, axis: str, output_name: str, title: str) -
     fig, axes = plt.subplots(len(devices), 1, figsize=(10.6, 3.4 * len(devices)), sharex=True, sharey=True)
     if len(devices) == 1:
         axes = [axes]
+    last_device = devices[-1]
     for ax, device in zip(axes, devices):
         sub = plot_df[plot_df["device_type"] == device]
         dataset_order = (
@@ -77,7 +84,10 @@ def plot_memory_bar(df: pd.DataFrame, axis: str, output_name: str, title: str) -
         ax.set_ylabel("Peak memory (GB)")
         clean_axis(ax)
         ax.tick_params(axis="x", rotation=0)
-        place_legend_right(ax)
+        if device == last_device:
+            place_legend_right(ax)
+        elif ax.legend_:
+            ax.legend_.remove()
     fig.suptitle(title, y=1.02, fontweight="bold")
     save_figure(fig, FIGURES_DIR / output_name)
 
@@ -135,6 +145,61 @@ def plot_loglog_memory(df: pd.DataFrame) -> None:
     save_figure(g.fig, FIGURES_DIR / "scalability_loglog_memory")
 
 
+def plot_loglog_memory_axis_device(
+    df: pd.DataFrame,
+    axis: str,
+    device_type: str,
+    output_name: str,
+) -> None:
+    x_col, title, x_label = AXIS_SPECS[axis]
+    sub = df[(df["experiment_axis"] == axis) & (df["device_type"] == device_type)].copy()
+    if sub.empty:
+        return
+    plot_df = (
+        sub.groupby(["model", "scale_group", "dataset"], dropna=False)
+        .mean(numeric_only=True)
+        .reset_index()
+    )
+    plot_df = add_model_display_columns(plot_df)
+    plot_df = remove_nonfinite_rows(plot_df, [x_col, "peak_memory_mb"])
+    plot_df = plot_df[(plot_df[x_col] > 0) & (plot_df["peak_memory_mb"] > 0)]
+    if plot_df.empty:
+        return
+
+    palette = {MODEL_LABELS.get(k, k): v for k, v in model_palette().items()}
+    fig, ax = plt.subplots(figsize=(5.0, 3.3))
+    sns.lineplot(
+        data=plot_df.sort_values([x_col, "model_order"]),
+        x=x_col,
+        y="peak_memory_mb",
+        hue="model_label",
+        marker="o",
+        markersize=4.2,
+        linewidth=1.45,
+        dashes=False,
+        palette=palette,
+        ax=ax,
+    )
+    ax.text(
+        0.01,
+        0.98,
+        device_label(device_type),
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=7.5,
+        color="#666666",
+    )
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel(x_label)
+    ax.set_ylabel("Peak memory (MB)")
+    ax.set_title(title, pad=14)
+    clean_axis(ax)
+    place_legend_right(ax)
+    save_figure(fig, FIGURES_DIR / output_name)
+
+
 def plot_loglog_memory_single_axis(df: pd.DataFrame, axis: str, x_col: str, title: str, output_name: str) -> None:
     sub = df[df["experiment_axis"] == axis].copy()
     if sub.empty:
@@ -156,6 +221,7 @@ def plot_loglog_memory_single_axis(df: pd.DataFrame, axis: str, x_col: str, titl
     if len(devices) == 1:
         axes = [axes]
 
+    last_device = devices[-1]
     for ax, device in zip(axes, devices):
         device_df = plot_df[plot_df["device_type"] == device].sort_values([x_col, "model_order"])
         sns.lineplot(
@@ -185,7 +251,10 @@ def plot_loglog_memory_single_axis(df: pd.DataFrame, axis: str, x_col: str, titl
         ax.set_xlabel("Samples" if x_col == "fit_rows" else "Features")
         ax.set_ylabel("Peak memory (MB)")
         clean_axis(ax)
-        place_legend_right(ax)
+        if device == last_device:
+            place_legend_right(ax)
+        elif ax.legend_:
+            ax.legend_.remove()
     fig.suptitle(title, y=1.03, fontweight="bold")
     save_figure(fig, FIGURES_DIR / output_name)
 
@@ -206,6 +275,14 @@ def main() -> int:
         "Peak memory",
     )
     plot_loglog_memory(df)
+    for axis in AXIS_SPECS:
+        for device in ordered_device_types_present(df):
+            plot_loglog_memory_axis_device(
+                df,
+                axis,
+                device,
+                f"{axis}_{device}_loglog_memory",
+            )
     plot_loglog_memory_single_axis(
         df,
         "sample_scale",

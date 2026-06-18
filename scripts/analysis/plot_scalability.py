@@ -20,6 +20,12 @@ from analysis_utils import (
 )
 
 
+AXIS_SPECS = {
+    "sample_scale": ("fit_rows", "Sample scaling", "Samples"),
+    "feature_scale": ("n_features", "Feature scaling", "Features"),
+}
+
+
 def aggregate_for_axis(df: pd.DataFrame, axis: str, metric: str, x_col: str, by_device: bool) -> pd.DataFrame:
     group_cols = ["model", "scale_group", x_col]
     if by_device:
@@ -44,6 +50,7 @@ def plot_line(df: pd.DataFrame, x_col: str, y_col: str, title: str, output_name:
         fig, axes = plt.subplots(1, len(devices), figsize=(4.8 * len(devices), 3.3), sharey=True)
         if len(devices) == 1:
             axes = [axes]
+        last_device = devices[-1]
         for ax, device in zip(axes, devices):
             sub = plot_df[plot_df["device_type"] == device]
             sns.lineplot(
@@ -73,7 +80,10 @@ def plot_line(df: pd.DataFrame, x_col: str, y_col: str, title: str, output_name:
             ax.set_ylabel(metric_label(y_col))
             if y_col.endswith("_time_seconds"):
                 ax.set_yscale("log")
-            place_legend_right(ax)
+            if device == last_device:
+                place_legend_right(ax)
+            elif ax.legend_:
+                ax.legend_.remove()
         fig.suptitle(title, y=1.03, fontweight="bold")
     else:
         fig, ax = plt.subplots(figsize=(5.0, 3.3))
@@ -151,6 +161,61 @@ def plot_loglog(df: pd.DataFrame, output_name: str) -> None:
     save_figure(g.fig, FIGURES_DIR / output_name)
 
 
+def plot_loglog_axis_device(
+    df: pd.DataFrame,
+    axis: str,
+    device_type: str,
+    output_name: str,
+) -> None:
+    x_col, title, x_label = AXIS_SPECS[axis]
+    sub = df[(df["experiment_axis"] == axis) & (df["device_type"] == device_type)].copy()
+    if sub.empty:
+        return
+    plot_df = (
+        sub.groupby(["model", "scale_group", "dataset"], dropna=False)
+        .mean(numeric_only=True)
+        .reset_index()
+    )
+    plot_df = add_model_display_columns(plot_df)
+    plot_df = remove_nonfinite_rows(plot_df, [x_col, "wall_time_seconds"])
+    plot_df = plot_df[(plot_df[x_col] > 0) & (plot_df["wall_time_seconds"] > 0)]
+    if plot_df.empty:
+        return
+
+    palette = {MODEL_LABELS.get(k, k): v for k, v in model_palette().items()}
+    fig, ax = plt.subplots(figsize=(5.0, 3.3))
+    sns.lineplot(
+        data=plot_df.sort_values([x_col, "model_order"]),
+        x=x_col,
+        y="wall_time_seconds",
+        hue="model_label",
+        marker="o",
+        markersize=4.2,
+        linewidth=1.45,
+        dashes=False,
+        palette=palette,
+        ax=ax,
+    )
+    ax.text(
+        0.01,
+        0.98,
+        device_label(device_type),
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=7.5,
+        color="#666666",
+    )
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel(x_label)
+    ax.set_ylabel("Wall time (s)")
+    ax.set_title(title, pad=14)
+    clean_axis(ax)
+    place_legend_right(ax)
+    save_figure(fig, FIGURES_DIR / output_name)
+
+
 def plot_loglog_single_axis(df: pd.DataFrame, axis: str, x_col: str, title: str, output_name: str) -> None:
     sub = df[df["experiment_axis"] == axis].copy()
     if sub.empty:
@@ -172,6 +237,7 @@ def plot_loglog_single_axis(df: pd.DataFrame, axis: str, x_col: str, title: str,
     if len(devices) == 1:
         axes = [axes]
 
+    last_device = devices[-1]
     for ax, device in zip(axes, devices):
         device_df = plot_df[plot_df["device_type"] == device].sort_values([x_col, "model_order"])
         sns.lineplot(
@@ -201,7 +267,10 @@ def plot_loglog_single_axis(df: pd.DataFrame, axis: str, x_col: str, title: str,
         ax.set_xlabel("Samples" if x_col == "fit_rows" else "Features")
         ax.set_ylabel("Wall time (s)")
         clean_axis(ax)
-        place_legend_right(ax)
+        if device == last_device:
+            place_legend_right(ax)
+        elif ax.legend_:
+            ax.legend_.remove()
     fig.suptitle(title, y=1.03, fontweight="bold")
     save_figure(fig, FIGURES_DIR / output_name)
 
@@ -244,6 +313,14 @@ def main() -> int:
             by_device=True,
         )
     plot_loglog(df, "scalability_loglog_time")
+    for axis in AXIS_SPECS:
+        for device in ordered_device_types_present(df):
+            plot_loglog_axis_device(
+                df,
+                axis,
+                device,
+                f"{axis}_{device}_loglog_time",
+            )
     plot_loglog_single_axis(
         df,
         "sample_scale",

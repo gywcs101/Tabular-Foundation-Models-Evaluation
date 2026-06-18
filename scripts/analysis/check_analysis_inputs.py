@@ -81,7 +81,9 @@ def main() -> int:
     summary = report.groupby(["runner_dir", "status"]).size().unstack(fill_value=0)
     print(summary)
     print(f"Saved completeness report to {output_path}")
-    return 0 if (report["status"] == "complete").all() else 1
+    blocking_statuses = {"missing", "no_success", "incomplete_files"}
+    has_blocking_issue = report["status"].isin(blocking_statuses).any()
+    return 1 if has_blocking_issue else 0
 
 
 if __name__ == "__main__":

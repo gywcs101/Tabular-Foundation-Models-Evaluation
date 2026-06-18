@@ -32,6 +32,12 @@ DEVICE_LABELS = {
 }
 
 DEVICE_ORDER = ["light_laptop", "gaming_laptop", "unknown"]
+
+RUNNER_DEVICE_OVERRIDES = {
+    "夏渝杰": "gaming_laptop",
+    "时光银": "gaming_laptop",
+    "陈业伟": "gaming_laptop",
+}
 FIGURE_FORMATS = ("png", "svg")
 
 PERFORMANCE_METRICS = ["accuracy", "balanced_accuracy", "macro_f1"]

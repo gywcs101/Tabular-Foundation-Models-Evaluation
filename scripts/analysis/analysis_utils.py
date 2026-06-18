@@ -20,6 +20,7 @@ from analysis_config import (
     NATURE_RCPARAMS,
     RESULTS_FINAL_DIR,
     RESULTS_RAW_DIR,
+    RUNNER_DEVICE_OVERRIDES,
     SELECTED_TALENT_DIR,
 )
 
@@ -88,6 +89,8 @@ def parse_runner_dir(name: str) -> tuple[str, str]:
     for suffix in ("_light_laptop", "_gaming_laptop"):
         if name.endswith(suffix):
             return name[: -len(suffix)], suffix[1:]
+    if name in RUNNER_DEVICE_OVERRIDES:
+        return name, RUNNER_DEVICE_OVERRIDES[name]
     return name, "unknown"
 
 
