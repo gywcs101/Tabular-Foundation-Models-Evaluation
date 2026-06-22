@@ -509,24 +509,13 @@ Other consistent confusions include 4↔5, 4↔6, and 6↔4, though at lower fre
 
 \section{Conclusion}
 
-This study presents a systematic benchmark comparing two tabular foundation models—\texttt{TabPFN} and \texttt{TabICL}—against two established gradient-boosted baselines—\texttt{XGBoost} and \texttt{LightGBM}—across 12 \texttt{TALENT} classification datasets under a controlled-variable experimental design. Our evaluation spans four dimensions: predictive performance, computational cost, scalability, and confidence calibration.
+This study systematically compares tabular foundation models (TFMs) against gradient-boosted decision trees (GBDTs) across three critical dimensions: predictive performance, computational consumption, and reliability.
 
-\textbf{Predictive performance.} Both tabular foundation models (TFMs) achieve superior average Macro-F1 compared to tree baselines, with \texttt{TabICL} leading at 0.851 (vs.\ \texttt{LightGBM} at 0.824). However, the advantage is not universal: on easy binary tasks all models perform similarly, and on severely imbalanced datasets (\texttt{jm1}, \texttt{default\_of\_credit\_card\_clients}) all struggle comparably. The TFM advantage is most meaningful on medium-complexity multi-class tasks such as the \texttt{mfeat} series.
+Our findings reveal a fundamental trade-off. TFMs achieve modest accuracy gains over GBDTs on medium-complexity multi-class tasks, but this advantage vanishes on simple binary or severely imbalanced datasets. More critically, the performance gains come at prohibitive computational cost: TFMs require orders of magnitude more inference time and memory than GBDTs, with super-linear scaling in sample size that renders them impractical for large-scale deployment. On reliability, both paradigms exhibit poor confidence calibration—incorrect predictions frequently carry high confidence, posing risks for high-stakes applications.
 
-\textbf{Computational cost.} The accuracy gains of TFMs come at a substantial price. On the largest dataset (30,000 samples), \texttt{TabPFN} predict time exceeds 4,000 seconds on a gaming laptop, while \texttt{LightGBM} completes inference in 22 milliseconds—a five-order-of-magnitude gap. \texttt{TabICL} is faster than \texttt{TabPFN} but still requires over 600 seconds on the same dataset. Peak memory consumption tells a similar story: \texttt{TabICL} reaches 18.8 GB on the largest dataset, while tree baselines remain under 250 MB throughout.
+These results underscore that GBDTs remain the pragmatic choice for most real-world tabular tasks, offering robust accuracy, exceptional efficiency, and predictable scaling. TFMs may find niche utility where marginal accuracy improvements justify extreme resource expenditure, but their operational overhead and reliability limitations currently outweigh their benefits for general use.
 
-\textbf{Scalability.} The controlled-variable design reveals that TFMs scale substantially worse than tree baselines along both sample-size and feature-count dimensions. \texttt{TabPFN}'s predict-time scalability exponent $\alpha \approx 1.6$ indicates super-linear growth with sample size; \texttt{TabICL} is somewhat better at $\alpha \approx 1.4$, but both are far above the sub-linear scaling of \texttt{LightGBM} ($\alpha \approx 0.45$) and \texttt{XGBoost} ($\alpha \approx 0.37$). Feature-count scaling exhibits a similar pattern, though at lower absolute cost. Tree baselines are effectively insensitive to feature dimensionality in the tested range.
-
-\textbf{Confidence calibration.} All four models exhibit suboptimal calibration: correct predictions receive higher confidence than incorrect ones, but wrong predictions routinely carry non-trivial confidence. No model provides a reliable low-confidence signal for its errors. This is a shared limitation across both paradigms and represents a practical risk for deployment in high-stakes applications.
-
-\textbf{Error patterns.} Cross-model analysis reveals that dominant error modes on \texttt{mfeat} datasets are shared by all models and driven by limited feature information rather than architecture, which largely disappear with increasing feature dimensionality.
-
-\textbf{Limitations.} This study is limited to classification tasks without hyperparameter tuning, uses consumer-grade hardware, and the dataset selection is representative rather than exhaustive.
-
-\textbf{Future work.} Future directions include regression and missing-value robustness experiments, retrieval-based in-context learning, and GPU performance evaluation.
-
-Overall, our findings highlight the fundamental trade-off between predictive capability and operational efficiency in modern tabular modeling, providing clear guidance for practitioners selecting appropriate methods for different application scenarios.
-
+Limitations include the focus on classification without hyperparameter tuning. Future work will extend this analysis to regression tasks, missing-value robustness, and GPU-accelerated inference scenarios.
 
 
 
