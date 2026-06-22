@@ -4,9 +4,9 @@
 \usepackage{tabularx}
 
 % 根据个人情况修改
-% \headl{左侧页眉}
-% \headc{中间页眉}
-% \headr{右侧页眉}
+\renewcommand{\headl}{Tabular Foundation Models Comparison} % 可以放标题
+\renewcommand{\headc}{} 
+\renewcommand{\headr}{SYSU Report}
 \lessonTitle{人工智能与大模型(II)}
 \reportTitle{Tabular Foundation Models Comparison}
 \stuname{吴兆临 \\ 姚怀宇 \\ 时光银 \\ 陈业伟 \\ 夏瑜杰}
@@ -273,7 +273,7 @@ All models run exclusively on CPU. Accuracy metrics are deterministic given the 
 
 
 
-\section{Results & Analysis}
+\section{Results and Analysis}
 \subsection{Overall Predictive Performance}
 
 We first examine which models achieve the strongest predictive performance across all 12 datasets. \autoref{fig: macro_f1} shows the distribution of Macro-F1 scores aggregated by model over five independent run.
