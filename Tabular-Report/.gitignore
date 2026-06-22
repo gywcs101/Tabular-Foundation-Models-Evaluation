@@ -1,11 +1,3 @@
-main.out
+main.*
 
-main.log
-
-main.aux
-
-main.synctex*
-
-main.toc
-
-main.pdf
+!main.pdf
