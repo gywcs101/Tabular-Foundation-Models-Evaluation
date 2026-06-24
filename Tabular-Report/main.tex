@@ -481,10 +481,37 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 
 \subsection{Error Patterns}
 
-For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. Table X lists the most frequent off-diagonal confusions across models.
+For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. \autoref{tab:error_patterns} lists the most frequent off-diagonal confusions across models.
 A striking cross-model pattern emerges: the digit pair 7 ↔ 10 is the dominant source of error on five of six mfeat datasets across all four models. On mfeat-morphological (6 features), LightGBM confuses true label 7 as 10 in 30 test samples and true label 10 as 7 in 26 samples—accounting for roughly half of all errors. TabICL and TabPFN exhibit the same confusion at similar magnitudes. This consistency across model families strongly suggests that the confusion arises from the feature representation rather than from any model-specific weakness: with only 6 morphological features, digits 7 and 10 appear visually similar in feature space.
 The confusion largely disappears when feature dimensionality increases. On mfeat-pixel (240 features), the 7↔10 confusion drops to just 1–3 samples per model, and overall accuracy rises above 0.96. This confirms that richer feature representations resolve the ambiguity that plagues low-dimensional mfeat variants.
 Other consistent confusions include 4↔5, 4↔6, and 6↔4, though at lower frequencies. These too diminish as feature count increases.
+
+\begin{table}[H]
+    \centering
+    \label{tab:error_patterns}
+    \begin{tabular}{llrrrr}
+    \hline
+    Dataset (Feat.) & Confusion & LightGBM & TabICL & TabPFN & XGBoost \\
+    \hline
+    \multirow{3}{*}{morph. (6)}
+        & 7 $\rightarrow$ 10 & 30 & 11 & 12 & 28 \\
+        & 10 $\rightarrow$ 7 & 26 & 30 & 29 & 26 \\
+        & 4 $\rightarrow$ 5  &  8 &  7 &  7 &  9 \\
+    \hline
+    \multirow{2}{*}{zernike (47)}
+        & 10 $\rightarrow$ 7 & 30 & 15 & 29 & 27 \\
+        & 7 $\rightarrow$ 10 & 24 & 12 & 21 & 23 \\
+    \hline
+    \multirow{2}{*}{fourier (76)}
+        & 10 $\rightarrow$ 7 & 17 & 10 & 10 & 17 \\
+        & 7 $\rightarrow$ 10 & 13 &  8 &  8 & 11 \\
+    \hline
+    pixel (240)
+        & 8 $\rightarrow$ 10  &  3 &  1 &  2 &  2 \\
+    \hline
+    \caption{Most Frequent Off-Diagonal Confusions in Multi-Class mfeat Datasets}
+    \end{tabular}
+\end{table}
 
 \begin{figure}
     \centering
