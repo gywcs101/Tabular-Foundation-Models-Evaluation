@@ -13,7 +13,7 @@
 \renewcommand{\headr}{SYSU Report}
 \lessonTitle{人工智能与大模型(II)}
 \reportTitle{Tabular Foundation Models Comparison}
-\stuname{吴兆临 \\ 姚怀宇 \\ 时光银 \\ 陈业伟 \\ 夏瑜杰}
+\stuname{吴兆临 \\ 姚怀宇 \\ 时光银 \\ 陈业伟 \\ 夏渝杰}
 \stuid{xxx\\ xxx \\ xxx \\ xxx \\ xxx} 
 \inst{软件工程学院}
 \major{软件工程}
@@ -155,13 +155,13 @@ However, existing benchmarks typically aggregate results across heterogeneous da
 \subsection{Datasets}
 We select 12 classification datasets from the TALENT benchmark, organized along two controlled experiment lines detailed below.
 
-\textbf{Sample-size scalability:} evaluates model behavior as the number of rows increases while the number of features is held approximately constant (20–23). We select six binary classification datasets partitioned into three scale groups:
+\textbf{Sample-size scalability} evaluates model behavior as the number of rows increases while the number of features is held approximately constant (20–23). We select six binary classification datasets partitioned into three scale groups:
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|c|l|l|l}
         \hline
-        Scale group     & Dataset       &Samples        &Features       &Classes    \\
+        Scale Group     & Dataset       &Samples        &Features       &Classes    \\
         \hline
         A (1k-3k)       & pc1           &1109           &21             &2          \\
         A (1k-3k)       & kc1           &2109           &21             &2          \\
@@ -171,7 +171,7 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
         C (10k-30k)     & default\_of\_credit\_card\_clients  &30000    &23 &2          \\
         \hline
     \end{tabular}
-    \caption{Sample-size scalability Datasets}
+    \caption{Sample-Size Scalability Datasets}
     \label{tab: Sample-size}
 \end{table}
 
@@ -181,7 +181,7 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
     \centering
     \begin{tabular}{l|c|l|l|l}
         \hline
-        Scale group     & Dataset       &Samples        &Features       &Classes    \\
+        Scale Group     & Dataset       &Samples        &Features       &Classes    \\
         \hline
         F1(6-20) & mfeat-morphological &2000 &6 &10 \\
         F2(20-100) & mfeat-zernike &2000 &47 &10 \\
@@ -191,7 +191,7 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
         F3(100-300) & mfeat-pixel &2000 &240 &10 \\
         \hline
     \end{tabular}
-    \caption{Feature-size scalability Datasets}
+    \caption{Feature-Size Scalability Datasets}
     \label{tab: Feature-size}
 \end{table}
 
@@ -337,7 +337,7 @@ To understand how model behavior evolves with data volume, we compare performanc
 %%=======================%%
 
 
-\textbf{Time cost:} The more consequential divergence emerges in time cost. Figure X shows predict time on a log-log scale. As sample size increases from about 1k to 30k, LightGBM's predict time grows from 3 ms to 22 ms on a gaming laptop, and XGBoost from 2 ms to 5 ms. In contrast, TabPFN's predict time rises from 7 seconds to over 4,000 seconds, and TabICL's from 2 seconds to over 600 seconds. This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
+\textbf{Time cost:} The more consequential divergence emerges in time cost. Figure 4 shows predict time on a log-log scale. As sample size increases from about 1k to 30k, LightGBM's predict time grows from 3 ms to 22 ms on a gaming laptop, and XGBoost from 2 ms to 5 ms. In contrast, TabPFN's predict time rises from 7 seconds to over 4,000 seconds, and TabICL's from 2 seconds to over 600 seconds. This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
 
 \begin{figure}[H]
     \centering
@@ -439,7 +439,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{figures/feature_scale_loglog_time.png}
-    \caption{Enter Caption}
+    \caption{Feature Scale Loglog Time}
     \label{fig:placeholder}
 \end{figure}
 
@@ -449,7 +449,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{figures/feature_scale_peak_memory_bar_by_device.png}
-    \caption{Enter Caption}
+    \caption{Feature Scale Peak-Memory Bar by Device}
     \label{fig:placeholder}
 \end{figure}
 
@@ -467,7 +467,7 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/confidence_correct_vs_wrong.png}
-    \caption{Enter Caption}
+    \caption{Confidence Reliability by State}
     \label{fig:placeholder}
 \end{figure}
 
@@ -475,21 +475,20 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/confidence_histogram_by_model.png}
-    \caption{Enter Caption}
+    \caption{Confidence Histogram by Model}
     \label{fig:placeholder}
 \end{figure}
 
 \subsection{Error Patterns}
 
-For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. \autoref{tab:error_patterns} lists the most frequent off-diagonal confusions across models.
-A striking cross-model pattern emerges: the digit pair 7 ↔ 10 is the dominant source of error on five of six mfeat datasets across all four models. On mfeat-morphological (6 features), LightGBM confuses true label 7 as 10 in 30 test samples and true label 10 as 7 in 26 samples—accounting for roughly half of all errors. TabICL and TabPFN exhibit the same confusion at similar magnitudes. This consistency across model families strongly suggests that the confusion arises from the feature representation rather than from any model-specific weakness: with only 6 morphological features, digits 7 and 10 appear visually similar in feature space.
-The confusion largely disappears when feature dimensionality increases. On mfeat-pixel (240 features), the 7↔10 confusion drops to just 1–3 samples per model, and overall accuracy rises above 0.96. This confirms that richer feature representations resolve the ambiguity that plagues low-dimensional mfeat variants.
-Other consistent confusions include 4↔5, 4↔6, and 6↔4, though at lower frequencies. These too diminish as feature count increases.
+For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. Table 6 lists the most frequent off-diagonal confusions across models.
+A striking cross-model pattern emerges: the digit pair 7-10 is the dominant source of error on five of six mfeat datasets across all four models. On mfeat-morphological (6 features), LightGBM confuses true label 7 as 10 in 30 test samples and true label 10 as 7 in 26 samples—accounting for roughly half of all errors. TabICL and TabPFN exhibit the same confusion at similar magnitudes. This consistency across model families strongly suggests that the confusion arises from the feature representation rather than from any model-specific weakness: with only 6 morphological features, digits 7 and 10 appear visually similar in feature space.
+The confusion largely disappears when feature dimensionality increases. On mfeat-pixel (240 features), the 7-10 confusion drops to just 1–3 samples per model, and overall accuracy rises above 0.96. This confirms that richer feature representations resolve the ambiguity that plagues low-dimensional mfeat variants.
+Other consistent confusions include 4-5, 4-6, and 6-4, though at lower frequencies. These too diminish as feature count increases.
 
 \begin{table}[H]
     \centering
     \label{tab:error_patterns}
-    \caption{Most Frequent Off-Diagonal Confusions in Multi-Class mfeat Datasets}
     \begin{tabular}{llrrrr}
     \hline
     Dataset (Feat.) & Confusion & LightGBM & TabICL & TabPFN & XGBoost \\
@@ -512,20 +511,20 @@ Other consistent confusions include 4↔5, 4↔6, and 6↔4, though at lower fre
     \hline
 
     \end{tabular}
+    \caption{Most Frequent Off-Diagonal Confusions in Multi-Class Mfeat Datasets}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{confusion_matrix_tabicl_mfeat-pixel_2000rows_240feat_multiclass.png}
-    \caption{Enter Caption}
-    \label{fig:placeholder}
-\end{figure}
-
-\begin{figure}
-    \centering
+    \caption{Confusion Matrix Tabicl Mfeat-Pixel 2000rows 240feat Multiclass}
+    \label{fig:confusion-pixel}
+    
+    \vspace{1em}
+    
     \includegraphics[width=0.5\linewidth]{confusion_matrix_tabicl_mfeat-morphological_2000rows_6feat_multiclass.png}
-    \caption{Enter Caption}
-    \label{fig:placeholder}
+    \caption{Confusion Matrix Tabicl Mfeat-Morphological 2000rows 6feat Multiclass}
+    \label{fig:confusion-morph}
 \end{figure}
 
 
