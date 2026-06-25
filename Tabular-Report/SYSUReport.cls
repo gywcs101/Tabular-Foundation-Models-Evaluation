@@ -127,11 +127,13 @@
 
 %%页眉设置
 \pagestyle{fancy}
-\fancyhead[L]{\fangsong {\headl}}
-\fancyhead[C]{\fangsong {\headc}}
-\fancyhead[R]{\fangsong {\headr}}
+\fancyhf{} % 清空原有页眉页脚
+\setlength{\headheight}{14.5pt}   
+\addtolength{\topmargin}{-2.5pt} 
 %% 去掉页眉横线
-% \renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\small\sffamily\scshape Section \leftmark} % 左侧动态显示当前主章节名称
+\fancyhead[R]{\small\sffamily Tabular Foundation Models Comparison} % 右侧固定显示精简的项目简称
+\fancyfoot[C]{\small\sffamily\thepage} % 页脚中心显示页码
 
 %% 常用图片文件夹路径
 \graphicspath{{figures/}{figure/}{pictures/}{picture/}{pic/}{pics/}{image/}{images/}}
