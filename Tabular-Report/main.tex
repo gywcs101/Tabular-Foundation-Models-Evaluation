@@ -250,14 +250,14 @@ All models run exclusively on CPU. Accuracy metrics are deterministic given the 
 \section{Results and Analysis}
 \subsection{Overall Predictive Performance}
 
-We first examine which models achieve the strongest predictive performance across all 12 datasets. \autoref{fig: macro_f1} shows the distribution of Macro-F1 scores aggregated by model over five independent run.
+We first examine which models achieve the strongest predictive performance across all 12 datasets. \autoref{fig: macro_f1} shows the distribution of Macro-F1 scores aggregated by model over five independent runs.
 
 
 \begin{table}[H]
     \centering
     \begin{tabular}{ccc}
     \hline
-        Model & Mean Accuracy & Mean Micro-F1 \\
+        Model & Mean Accuracy & Mean Macro-F1 \\
     \hline
         TabICL & 0.913 & 0.851 \\
         TabPFN & 0.906 & 0.844 \\
@@ -278,7 +278,7 @@ We first examine which models achieve the strongest predictive performance acros
 \end{figure}
 
 
-Both TabICL and TabPFN outperform baselines on average, with TabICL holding a consistent edge over TabPFN. However, \autoref{fig: macro_f1_by_dataset} shows advantage of TFMs is not uniform across datasets. On strongly separable binary tasks such as sylvine and ringnorm, all four models exceed 0.94 accuracy and the gaps between them are negligible. The advantage of TFM is most pronounced in the mfeat series, particularly the mid-dimensional variants (zernike, fourier, karhunen), where TabICL improves Macro-F1 by 5\textasciitilde 12 percentage points over LightGBM. On the largest binary datasets (jm1, default\_of\_credit\_card\_clients), all models struggle similarly, with accuracy clustering tightly around 0.81–0.83 and Balanced Accuracy below 0.67, reflecting heavy class imbalance rather than model weakness.
+Both TabICL and TabPFN outperform baselines on average, with TabICL holding a consistent edge over TabPFN. However, \autoref{fig: macro_f1_by_dataset} shows advantage of TFMs is not uniform across datasets. On strongly separable binary tasks such as sylvine and ringnorm, all four models exceed 0.94 accuracy and the gaps between them are negligible. The advantage of TFM is most pronounced in the mfeat series, particularly the mid-dimensional variants: TabICL improves Macro-F1 by 11.6 pp on zernike and 5.0 pp on fourier, though on karhunen the gap narrows to 2.8 pp. On the largest binary datasets (jm1, default\_of\_credit\_card\_clients), all models struggle similarly, with accuracy clustering tightly around 0.81\textasciitilde 0.83 and Balanced Accuracy below 0.67, reflecting heavy class imbalance rather than model weakness.
 
 \begin{figure}[H]
     \centering
@@ -300,7 +300,7 @@ Both TabICL and TabPFN outperform baselines on average, with TabICL holding a co
 
 To understand how model behavior evolves with data volume, we compare performance and cost across the six sample-scale datasets, ranging from 1,109 to 30,000 training samples.
 
-\textbf{Performance trend:} \autoref{fig: sample_scale_macro_f1_line} plots Macro-F1 against increasing sample size. All four models improve as sample size grows from 1k to 5k, but the trajectory flattens or declines beyond 10k, particularly on jm1 and default\_of\_credit\_card\_clients where class imbalance penalizes Macro-F1 despite stable accuracy. TabICL maintains the highest Macro-F1 at every scale point.
+\textbf{Performance trend:} \autoref{fig: sample_scale_macro_f1_line} plots Macro-F1 against increasing sample size. All four models improve as sample size grows from 1k to 5k, but the trajectory flattens or declines beyond 10k, particularly on jm1 and default\_of\_credit\_card\_clients where class imbalance penalizes Macro-F1 despite stable accuracy. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(sylvine, jm1) but is outperformed by TabPFN on pc1 and ringnorm and by LightGBM on kc1 at the smaller scales.
 
 \begin{figure}[H]
     \centering
@@ -314,13 +314,13 @@ To understand how model behavior evolves with data volume, we compare performanc
 %%=======================%%
 
 
-\textbf{Time cost:} The more consequential divergence emerges in time cost. Figure 4 shows predict time on a log-log scale. As sample size increases from about 1k to 30k, LightGBM's predict time grows from 3 ms to 22 ms on a gaming laptop, and XGBoost from 2 ms to 5 ms. In contrast, TabPFN's predict time rises from 7 seconds to over 4,000 seconds, and TabICL's from 2 seconds to over 600 seconds. This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
+\textbf{Time cost:} The more consequential divergence emerges in time cost. Figure 4 shows predict time on a log-log scale. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(sylvine, jm1) but is outperformed by TabPFN on pc1 and ringnorm and by LightGBM on kc1 at the smaller scales. This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/sample_scale_loglog_time.png}
     \caption{Time Cost Sample Scaling}
-    \label{fig:placeholder}
+    \label{fig: sample-scale-loglog-time}
 \end{figure}
 
 \begin{table}[H]
@@ -349,7 +349,7 @@ To understand how model behavior evolves with data volume, we compare performanc
 \end{figure}
 
 
-An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas $\alpha \approx 2.0$ suggests quadratic behavior. TabPFN's scaling factor($\alpha \approx 1.6$) reflects substantially super-linear time growth relative to sample size; specifically, doubling the number of samples increases the prediction time by a factor of approximately $2^{1.6} \approx 3.03$. TabICL scales slightly slightly better at $\alpha \approx 1.4 \sim 1.5$. However, both foundation models scale significantly worse than the decision tree baselines($\alpha \approx 0.3 \sim 0.7$). Specifically, LightGBM and XGBoost maintain sub-linear growth with respect to sample size in prediction runtime.
+An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas $\alpha \approx 2.0$ suggests quadratic behavior. TabPFN's scaling factor($\alpha \approx 1.6$) reflects substantially super-linear time growth relative to sample size; specifically, doubling the number of samples increases the prediction time by a factor of approximately $2^{1.6} \approx 3.03$. TabICL scales slightly better at $\alpha \approx 1.4 \sim 1.5$. However, both foundation models scale significantly worse than the decision tree baselines($\alpha \approx 0.3 \sim 0.7$). Specifically, LightGBM and XGBoost maintain sub-linear growth with respect to sample size in prediction runtime.
 
 
 
@@ -411,7 +411,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \end{table}
 
 
-\textbf{Scalability trend:} Notably, tree baselines show near-zero or negative $\alpha$ on feature-count scalability, indicating that their inference time is nearly independent of feature dimensionality in this regime. In contrast, both TFMs scale substantially with feature count: doubling the number of features approximately doubles the predict time for TabICL ($\alpha \approx 0.69$) and slightly more than doubles for TabPFN ($\alpha \approx 0.82\sim 0.94$). On \texttt{mfeat-pixel} (240 features, 2,000 samples), TabPFN predict time reaches 293 seconds on a gaming laptop, compared to 0.02 seconds for LightGBM—a four-order-of-magnitude difference.
+\textbf{Scalability trend:} Notably, tree baselines show near-zero or negative $\alpha$ on feature-count scalability, indicating that their inference time is nearly independent of feature dimensionality in this regime. In contrast, both TFMs scale substantially with feature count: doubling the number of features approximately doubles the predict time for TabICL ($\alpha \approx 0.69$) and slightly more than doubles for TabPFN ($\alpha \approx 0.82\sim 0.94$). On \texttt{mfeat-pixel} (240 features, 2,000 samples), TabPFN predict time reaches 293 seconds on a gaming laptop, compared to 0.02 seconds for LightGBM—a four-orders-of-magnitude difference.
 
 \begin{figure}
     \centering
