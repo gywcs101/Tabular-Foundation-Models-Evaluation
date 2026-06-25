@@ -51,7 +51,7 @@
 \RequirePackage{makeidx}
 \RequirePackage{xcolor}
 \RequirePackage{fontspec}
-\RequirePackage{subfigure}
+\RequirePackage{subcaption}
 \PassOptionsToPackage{hyphens}{url}
 \RequirePackage{hyperref}
 \RequirePackage{booktabs}

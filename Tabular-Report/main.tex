@@ -14,7 +14,7 @@
 \lessonTitle{人工智能与大模型(II)}
 \reportTitle{Tabular Foundation Models Comparison}
 \stuname{吴兆临 \\ 姚怀宇 \\ 时光银 \\ 陈业伟 \\ 夏渝杰}
-\stuid{xxx\\ xxx \\ xxx \\ xxx \\ xxx} 
+\stuid{xxx\\ 24336145 \\ xxx \\ xxx \\ xxx} 
 \inst{软件工程学院}
 \major{软件工程}
 \date{\today}
@@ -516,15 +516,21 @@ Other consistent confusions include 4-5, 4-6, and 6-4, though at lower frequenci
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{confusion_matrix_tabicl_mfeat-pixel_2000rows_240feat_multiclass.png}
-    \caption{Confusion Matrix Tabicl Mfeat-Pixel 2000rows 240feat Multiclass}
-    \label{fig:confusion-pixel}
-    
-    \vspace{1em}
-    
-    \includegraphics[width=0.5\linewidth]{confusion_matrix_tabicl_mfeat-morphological_2000rows_6feat_multiclass.png}
-    \caption{Confusion Matrix Tabicl Mfeat-Morphological 2000rows 6feat Multiclass}
-    \label{fig:confusion-morph}
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/confusion_matrix_tabicl_mfeat-pixel_2000rows_240feat_multiclass.png}
+        \subcaption{mfeat-pixel (240 features)}
+        \label{fig:confusion-pixel}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/confusion_matrix_tabicl_mfeat-morphological_2000rows_6feat_multiclass.png}
+        \subcaption{mfeat-morphological (6 features)}
+        \label{fig:confusion-morph}
+    \end{minipage}
+    \caption{Confusion Matrixes of TabICL}
+    \label{fig:confusion-tabicl}
 \end{figure}
 
 
