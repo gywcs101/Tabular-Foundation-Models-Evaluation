@@ -134,7 +134,7 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
 
 \textbf{Sample-size scalability} evaluates model behavior as the number of rows increases while the number of features is held approximately constant (20–23). We select six binary classification datasets partitioned into three scale groups:
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \begin{tabular}{l|c|l|l|l}
         \hline
@@ -154,7 +154,7 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
 
 \textbf{Feature-count scalability} evaluates model behavior as feature dimensionality increases while sample size is held constant at 2,000 rows. We use six mfeat datasets, all of which are 10-class digit recognition tasks:
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \begin{tabular}{l|c|l|l|l}
         \hline
@@ -253,7 +253,7 @@ All models run exclusively on CPU. Accuracy metrics are deterministic given the 
 We first examine which models achieve the strongest predictive performance across all 12 datasets. \autoref{fig: macro_f1} shows the distribution of Macro-F1 scores aggregated by model over five independent runs.
 
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \begin{tabular}{ccc}
     \hline
@@ -270,7 +270,7 @@ We first examine which models achieve the strongest predictive performance acros
 \end{table}
 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width =.4\textwidth]{figures/performance_macro_f1_by_model.png}
     \caption{Prediction Performance}
@@ -278,13 +278,13 @@ We first examine which models achieve the strongest predictive performance acros
 \end{figure}
 
 
-Both TabICL and TabPFN outperform baselines on average, with TabICL holding a consistent edge over TabPFN. However, \autoref{fig: macro_f1_by_dataset} shows advantage of TFMs is not uniform across datasets. On strongly separable binary tasks such as sylvine and ringnorm, all four models exceed 0.94 accuracy and the gaps between them are negligible. The advantage of TFM is most pronounced in the mfeat series, particularly the mid-dimensional variants: TabICL improves Macro-F1 by 11.6 pp on zernike and 5.0 pp on fourier, though on karhunen the gap narrows to 2.8 pp. On the largest binary datasets (jm1, default\_of\_credit\_card\_clients), all models struggle similarly, with accuracy clustering tightly around 0.81\textasciitilde 0.83 and Balanced Accuracy below 0.67, reflecting heavy class imbalance rather than model weakness.
+Both TabICL and TabPFN outperform baselines on average, with TabICL holding a consistent edge over TabPFN. However, \autoref{fig: macro-f1-by-dataset} shows advantage of TFMs is not uniform across datasets. On strongly separable binary tasks such as sylvine and ringnorm, all four models exceed 0.94 accuracy and the gaps between them are negligible. The advantage of TFM is most pronounced in the mfeat series, particularly the mid-dimensional variants: TabICL improves Macro-F1 by 11.6 pp on zernike and 5.0 pp on fourier, though on karhunen the gap narrows to 2.8 pp. On the largest binary datasets (jm1, default\_of\_credit\_card\_clients), all models struggle similarly, with accuracy clustering tightly around 0.81\textasciitilde 0.83 and Balanced Accuracy below 0.67, reflecting heavy class imbalance rather than model weakness.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/performance_macro_f1_by_dataset.png}
     \caption{Performance by Dataset}
-    \label{fig: macro_f1_by_dataset}
+    \label{fig: macro-f1-by-dataset}
 \end{figure}
 
 
@@ -302,7 +302,7 @@ To understand how model behavior evolves with data volume, we compare performanc
 
 \textbf{Performance trend:} \autoref{fig: sample_scale_macro_f1_line} plots Macro-F1 against increasing sample size. All four models improve as sample size grows from 1k to 5k, but the trajectory flattens or declines beyond 10k, particularly on jm1 and default\_of\_credit\_card\_clients where class imbalance penalizes Macro-F1 despite stable accuracy. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(sylvine, jm1) but is outperformed by TabPFN on pc1 and ringnorm and by LightGBM on kc1 at the smaller scales.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/sample_scale_macro_f1_line.png}
     \caption{Macro-F1 Sample Scaling}
@@ -314,16 +314,16 @@ To understand how model behavior evolves with data volume, we compare performanc
 %%=======================%%
 
 
-\textbf{Time cost:} The more consequential divergence emerges in time cost. Figure 4 shows predict time on a log-log scale. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(sylvine, jm1) but is outperformed by TabPFN on pc1 and ringnorm and by LightGBM on kc1 at the smaller scales. This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
+\textbf{Time cost:} The more consequential divergence emerges in time cost. As sample size increases from 1k to 30k, tree baselines remain below 30 ms throughout. TabICL predict time rises from 3.7 s to 419 s (mean across three gaming laptops; range 2.0\textasciitilde 5.5 s to 230\textasciitilde 598 s), and TabPFN from 14.4 s to 3,551 s (range 7.1\textasciitilde 21.3 s to 1,716\textasciitilde 4,572 s). This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression:
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/sample_scale_loglog_time.png}
     \caption{Time Cost Sample Scaling}
     \label{fig: sample-scale-loglog-time}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \begin{tabular}{ccc}
     \hline
@@ -341,7 +341,7 @@ To understand how model behavior evolves with data volume, we compare performanc
 
 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/sample_scale_predict_time_seconds_line_by_device.png}
     \caption{Sample Scaling}
@@ -359,7 +359,7 @@ An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas 
 \textbf{Memory cost:} Peak memory follows a similar pattern. Tree baselines remain nearly flat at 150–250 MB regardless of sample size, while TabICL grows from $\approx$ 1.4 GB on \texttt{pc1} to $\approx$ 18.8 GB on default\_of\_credit\_card\_clients (gaming laptop), and TabPFN from 1.0 GB to 4.8 GB. The $\alpha$ values for memory growth confirm this: TabICL $\alpha \approx 0.76\sim 0.84$, TabPFN $\alpha \approx 0.43$, tree models $\alpha \approx 0.02 \sim 0.04$.
 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/sample_scale_loglog_memory.png}
     \caption{Memory Sample Scaling}
@@ -382,7 +382,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \textbf{Performance trend:} \autoref{fig: feature-scale-macro-f1-line} shows that Macro-F1 rises sharply with feature count for all models. On the low-dimensional mfeat-morphological (6 features), all models achieve only $\approx 0.71\sim 0.78$ Macro-F1. By mfeat-factors (216 features), performance exceeds 0.96, and by mfeat-pixel (240 features) it reaches $0.96\sim 0.97$. TabICL and TabPFN consistently outperform tree baselines across the mid-dimensional spectrum (zernike through karhunen), but the gap narrows at the highest dimensions as all models approach near-perfect accuracy.
 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/feature_scale_macro_f1_line.png}
     \caption{Feature Macro-F1 Scaling}
@@ -394,7 +394,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \textbf{Time cost:} Feature count affects TFMs more than tree baselines. The measured $\alpha$ values for predict time versus feature count are:
 
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \begin{tabular}{ccc}
     \hline
@@ -442,7 +442,7 @@ All four models assign substantially higher confidence to correct predictions th
 A concerning pattern emerges across all models: wrong predictions routinely receive non-trivial confidence. On the binary dataset jm1, LightGBM assigns a mean confidence of 0.76 to its errors, and TabPFN assigns 0.76. Even TabICL, which shows the best overall separation, assigns 0.76 to wrong predictions on the same dataset. This indicates that none of the models provide a reliable "I don't know" signal—incorrect predictions are not accompanied by low confidence.
 Takeaway: Confidence scores are directionally useful (correct > wrong) for all models, but the absolute calibration is poor. Users should not interpret high confidence as a guarantee of correctness, regardless of the model family.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/confidence_correct_vs_wrong.png}
     \caption{Confidence Reliability by State}
@@ -450,7 +450,7 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 \end{figure}
 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/confidence_histogram_by_model.png}
     \caption{Confidence Histogram by Model}
@@ -459,14 +459,13 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 
 \subsection{Error Patterns}
 
-For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. Table 6 lists the most frequent off-diagonal confusions across models.
+For the multi-class mfeat datasets, we examine confusion matrices to identify systematic error patterns. \autoref{tab: error-patterns} lists the most frequent off-diagonal confusions across models.
 A striking cross-model pattern emerges: the digit pair 7\textasciitilde 10 is the dominant source of error on five of six mfeat datasets across all four models. On mfeat-morphological (6 features), LightGBM confuses true label 7 as 10 in 30 test samples and true label 10 as 7 in 26 samples—accounting for roughly half of all errors. TabICL and TabPFN exhibit the same confusion at similar magnitudes. This consistency across model families strongly suggests that the confusion arises from the feature representation rather than from any model-specific weakness: with only 6 morphological features, digits 7 and 10 appear visually similar in feature space.
 The confusion largely disappears when feature dimensionality increases. On mfeat-pixel (240 features), the 7\textasciitilde 10 confusion drops to just 1\textasciitilde 3 samples per model, and overall accuracy rises above 0.96. This confirms that richer feature representations resolve the ambiguity that plagues low-dimensional mfeat variants.
 Other consistent confusions include 4\textasciitilde 5, 4\textasciitilde 6, and 6\textasciitilde 4, though at lower frequencies. These too diminish as feature count increases.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
-    \label{tab:error-patterns}
     \begin{tabular}{llrrrr}
     \hline
     Dataset (Feat.) & Confusion & LightGBM & TabICL & TabPFN & XGBoost \\
@@ -490,9 +489,10 @@ Other consistent confusions include 4\textasciitilde 5, 4\textasciitilde 6, and 
 
     \end{tabular}
     \caption{Most Frequent Off-Diagonal Confusions in Multi-Class Mfeat Datasets}
+    \label{tab: error-patterns}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \begin{minipage}[t]{0.48\textwidth}
         \centering
