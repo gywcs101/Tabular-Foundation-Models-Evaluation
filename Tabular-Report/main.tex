@@ -197,7 +197,7 @@ All models are used with fixed random seed 42. No hyperparameter tuning is perfo
     \item \textbf{Macro-F1:} the unweighted mean of per-class F1 scores, suitable for multi-class evaluation.
 \end{itemize}
 
-\textbf{Confidence calibration} is measured through four quantities derived from the models' predicted class probabilities,following the classical calibration evaluation framework\cite{guo2017calibration}:
+\textbf{Confidence calibration} is measured through 4 quantities derived from the models' predicted class probabilities,following the classical calibration evaluation framework\cite{guo2017calibration}:
 
 \begin{itemize}
     \item \textbf{Mean Confidence:} the average confidence across all test predictions.
@@ -356,7 +356,7 @@ An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas 
 %%=======================%%
 
 
-\textbf{Memory cost:} Peak memory follows a similar pattern. Tree baselines remain nearly flat at 150–250 MB regardless of sample size, while TabICL grows from $\approx$ 1.4 GB on \texttt{pc1} to $\approx$ 18.8 GB on default\_of\_credit\_card\_clients (gaming laptop), and TabPFN from 1.0 GB to 4.8 GB. The $\alpha$ values for memory growth confirm this: TabICL $\alpha \approx 0.76\sim 0.84$, TabPFN $\alpha \approx 0.43$, tree models $\alpha \approx 0.02 \sim 0.04$.
+\textbf{Memory cost:} Peak memory follows a similar pattern. Tree baselines remain nearly flat at 150\textasciitilde 250 MB regardless of sample size, while TabICL grows from $\approx$ 1.4 GB on \texttt{pc1} to $\approx$ 18.8 GB on default\_of\_credit\_card\_clients (gaming laptop), and TabPFN from 1.0 GB to 4.8 GB. The $\alpha$ values for memory growth confirm this: TabICL $\alpha \approx 0.76\sim 0.84$, TabPFN $\alpha \approx 0.43$, while tree models have $\alpha \approx 0.02 \sim 0.04$.
 
 
 \begin{figure}[htbp]
@@ -368,7 +368,7 @@ An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas 
 
 
 
-\textbf{Takeaway:} TFMs maintain their predictive advantage across sample sizes, but pay a steep and growing computational cost as data volume increases. For tasks above 10k samples on CPU, the practical runtime of TFMs may become prohibitive.
+Therefore, although TFMs maintain a predictive advantage across increasing sample sizes, this advantage comes at the cost of rapidly growing inference time and memory, which may limit their practicality on larger CPU-based tabular datasets.
 
 
 %%=======================%%
@@ -431,7 +431,7 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 \end{figure}
 
 
-\textbf{Takeaway:} Feature dimensionality has a modest impact on tree models but a substantial one on TFMs, particularly TabPFN. However, the absolute costs are far lower than for sample-size scaling—even at 240 features, the 2,000-sample \texttt{mfeat-pixel} runs in under 5 minutes for TabPFN, whereas 30,000 samples $\times$ 23 features requires over an hour. This suggests that feature count and sample count interact in determining TFM cost, but sample count dominates.
+Feature dimensionality has a modest impact on tree models but a substantial one on TFMs, particularly TabPFN. However, the absolute costs are far lower than for sample-size scaling, even at 240 features, the 2,000-sample \texttt{mfeat-pixel} runs in under 5 minutes for TabPFN, whereas 30,000 samples $\times$ 23 features requires over an hour. This suggests that feature count and sample count interact in determining TFM cost, but sample count dominates.
 
 
 \subsection{Confidence Calibration}
