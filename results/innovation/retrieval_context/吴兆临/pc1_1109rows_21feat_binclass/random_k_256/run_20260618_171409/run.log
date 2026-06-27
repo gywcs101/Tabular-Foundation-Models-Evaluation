@@ -1,0 +1,9 @@
+run_id=run_20260618_171409
+runner_name=吴兆临
+dataset=pc1_1109rows_21feat_binclass
+context_strategy=random_k
+k=256
+seed=42
+start_time=2026-06-18T17:14:09
+success=True
+wall_time_seconds=693.6499798000004

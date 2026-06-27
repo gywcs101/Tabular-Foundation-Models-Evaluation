@@ -236,6 +236,44 @@ results/figures/
 python scripts\run_smoke_test.py
 ```
 
+## 创新点实验：TabICL 检索式上下文选择
+
+这个实验用于 Big Plus，不替代主实验。正式创新实验使用欧氏距离 top-k 检索，并和 full context、random-k 做公平比较。
+
+实验 1：随机抽取 100 个测试样本，固定随机种子 42，跑三个候选数据集：
+
+- `mfeat-zernike`
+- `mfeat-fourier`
+- `sylvine`
+
+每个数据集都会跑：
+
+- `full`：完整 train + val 上下文
+- `random_k512`：随机选择 512 个上下文样本
+- `retrieval_k512 euclidean`：选择欧氏距离最近的 512 个上下文样本
+
+```powershell
+& ".\.local_envs\tabicl\python.exe" scripts\innovation\run_innovation_exp1_random100.py --runner-name gywcs101
+```
+
+稳定性实验：只在 `mfeat-zernike` 上随机抽取 50 个测试样本，比较 `full` 和 `retrieval_k512 euclidean`。随机种子固定为 42，抽样索引会保存到每个结果目录的 `test_indices.csv`：
+
+```powershell
+& ".\.local_envs\tabicl\python.exe" scripts\innovation\run_tabicl_zernike_random50_full_topk512.py --runner-name gywcs101
+```
+
+创新点实验结果保存到：
+
+```text
+results\innovation\retrieval_context\{runner_name}\
+```
+
+汇总表保存为：
+
+```text
+results\innovation\retrieval_context\{runner_name}\summary_metrics.csv
+```
+
 ## Git 常用命令
 
 查看当前改动：

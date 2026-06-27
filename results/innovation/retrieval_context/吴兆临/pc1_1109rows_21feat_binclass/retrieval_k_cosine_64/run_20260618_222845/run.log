@@ -1,0 +1,10 @@
+run_id=run_20260618_222845
+runner_name=吴兆临
+dataset=pc1_1109rows_21feat_binclass
+context_strategy=retrieval_k
+k=64
+retrieval_metric=cosine
+seed=42
+start_time=2026-06-18T22:28:45
+success=True
+wall_time_seconds=154.42550029999984

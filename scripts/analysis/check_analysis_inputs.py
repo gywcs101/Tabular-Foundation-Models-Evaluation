@@ -11,7 +11,7 @@ import pandas as pd
 
 def is_successful_metrics(metrics_path: Path) -> bool:
     try:
-        with metrics_path.open(newline="", encoding="utf-8") as file:
+        with metrics_path.open(newline="", encoding="utf-8-sig") as file:
             row = next(csv.DictReader(file), None)
         return bool(row) and str(row.get("success", "")).lower() == "true"
     except Exception:

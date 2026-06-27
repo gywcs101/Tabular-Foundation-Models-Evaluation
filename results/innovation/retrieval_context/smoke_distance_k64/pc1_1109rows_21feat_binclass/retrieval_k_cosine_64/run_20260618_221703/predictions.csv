@@ -1,0 +1,2 @@
+﻿sample_index,y_true,y_pred,correct,confidence,prob_class_False,prob_class_True
+0,False,False,True,1.0,1.0,0.0

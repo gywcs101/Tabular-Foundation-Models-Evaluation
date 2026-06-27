@@ -1,0 +1,9 @@
+run_id=run_20260618_170813
+runner_name=吴兆临
+dataset=mfeat-morphological_2000rows_6feat_multiclass
+context_strategy=retrieval_k
+k=256
+seed=42
+start_time=2026-06-18T17:08:13
+success=False
+wall_time_seconds=335.33945250000033

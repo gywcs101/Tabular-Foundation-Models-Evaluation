@@ -1,0 +1,10 @@
+run_id=run_20260619_002116
+runner_name=吴兆临
+dataset=mfeat-fourier_2000rows_76feat_multiclass
+context_strategy=retrieval_k
+k=512
+retrieval_metric=euclidean
+seed=42
+start_time=2026-06-19T00:21:16
+success=True
+wall_time_seconds=1227.6587602

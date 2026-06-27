@@ -153,7 +153,7 @@ def has_successful_result(
         return False
     for metrics_path in result_root.glob("run_*/metrics.csv"):
         try:
-            with metrics_path.open(newline="", encoding="utf-8") as file:
+            with metrics_path.open(newline="", encoding="utf-8-sig") as file:
                 row = next(csv.DictReader(file), None)
         except Exception:
             continue

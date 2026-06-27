@@ -1,0 +1,10 @@
+run_id=run_20260619_192758
+runner_name=吴兆临
+dataset=sylvine_5124rows_20feat_binclass
+context_strategy=retrieval_k
+k=512
+retrieval_metric=euclidean
+seed=42
+start_time=2026-06-19T19:27:58
+success=True
+wall_time_seconds=1183.7839840000015

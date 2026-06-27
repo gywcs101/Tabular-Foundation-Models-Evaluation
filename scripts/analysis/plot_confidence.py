@@ -27,7 +27,7 @@ def read_predictions_file(path: Path) -> pd.DataFrame:
     model_dir = axis_dir.parent
     runner_dir = model_dir.parent
     runner_name, device_type = parse_runner_dir(runner_dir.name)
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, encoding="utf-8-sig")
     df["runner_dir"] = runner_dir.name
     df["runner_name_from_dir"] = runner_name
     df["device_type"] = device_type

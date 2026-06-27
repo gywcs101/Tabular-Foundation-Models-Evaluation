@@ -126,7 +126,7 @@ def discover_runner_dirs() -> list[Path]:
 
 
 def read_single_metrics(metrics_path: Path) -> dict[str, object]:
-    with metrics_path.open(newline="", encoding="utf-8") as file:
+    with metrics_path.open(newline="", encoding="utf-8-sig") as file:
         row = next(csv.DictReader(file))
     run_dir = metrics_path.parent
     dataset_dir = run_dir.parent

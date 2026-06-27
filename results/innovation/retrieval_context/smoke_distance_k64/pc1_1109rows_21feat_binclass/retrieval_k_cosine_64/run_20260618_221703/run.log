@@ -1,0 +1,10 @@
+run_id=run_20260618_221703
+runner_name=smoke_distance_k64
+dataset=pc1_1109rows_21feat_binclass
+context_strategy=retrieval_k
+k=64
+retrieval_metric=cosine
+seed=42
+start_time=2026-06-18T22:17:03
+success=True
+wall_time_seconds=2.4331048999956693

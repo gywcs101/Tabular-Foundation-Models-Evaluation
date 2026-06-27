@@ -37,7 +37,7 @@ def read_confusion_matrix(path: Path) -> tuple[pd.DataFrame, dict[str, str]]:
     model_dir = axis_dir.parent
     runner_dir = model_dir.parent
     runner_name, device_type = parse_runner_dir(runner_dir.name)
-    matrix = pd.read_csv(path)
+    matrix = pd.read_csv(path, encoding="utf-8-sig")
     labels = matrix["true_label"].astype(str).tolist()
     values = matrix.drop(columns=["true_label"])
     values.columns = [col.replace("pred_", "") for col in values.columns]
