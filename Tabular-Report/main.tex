@@ -120,7 +120,7 @@ Despite their rapid development, systematic comparisons between TFMs and traditi
 \subsection{Benchmarks for Tabular Data}
 Several benchmark platforms have been developed to standardize the evaluation of tabular machine learning methods. TALENT provides a unified toolbox encompassing hundreds of classification and regression datasets, along with implementations of numerous deep learning and tree-based models. It organizes datasets by task type, sample size, and feature composition, making it a practical resource for controlled experiments. TabArena \cite{erickson2026tabarena} offers a continuously updated leaderboard that emphasizes fair comparison across model families, including standardized splits, consistent metric reporting, and computational cost analysis.
 
-However, existing benchmarks typically aggregate results across heterogeneous datasets without systematically disentangling the effects of individual data properties. An improvement in aggregate accuracy could stem from superior handling of large sample sizes, high-dimensional features, or imbalanced classes, but aggregate metrics alone cannot reveal which factor drives the difference. In this work, we adopt a controlled-variable evaluation strategy that separately examines sample-size scalability and feature-count scalability, enabling clearer attribution of model behavior to specific data characteristics.
+However, existing benchmarks typically aggregate results across heterogeneous datasets without disentangling the effects of individual data properties. An improvement in aggregate accuracy could stem from superior handling of large sample sizes, high-dimensional features, or imbalanced classes. Yet aggregate metrics alone cannot reveal which factor drives the difference. In this work, we adopt a controlled-variable evaluation strategy that separately examines sample-size scalability and feature-count scalability, enabling clearer attribution of model behavior to specific data characteristics.
 
 
 
@@ -438,7 +438,7 @@ Feature dimensionality has a modest impact on tree models but a substantial one 
 
 Beyond predictive accuracy, we examine whether models can assess the reliability of their own predictions through confidence calibration\cite{guo2017calibration}. \autoref{fig: confidence-reliability} compares the mean confidence assigned to correct versus incorrect predictions for each model.
 
-All four models assign substantially higher confidence to correct predictions than to incorrect ones, confirming that confidence carries signal about prediction quality. However, the degree of separation varies. TabICL and TabPFN exhibit the largest confidence gaps, exceeding 0.30 on several mfeat datasets—meaning that correct predictions are assigned confidence near 0.92\textasciitilde{} 0.99 while wrong predictions receive around 0.54\textasciitilde{} 0.65. In contrast, LightGBM and XGBoost produce narrower gaps: on \texttt{mfeat-morphological}, LightGBM's confidence gap is 0.05 (correct mean 0.95 vs. wrong mean 0.90), meaning the model remains highly confident even when mistaken.
+All four models assign substantially higher confidence to correct predictions than to incorrect ones, confirming that confidence carries signal about prediction quality. However, the degree of separation varies. TabICL and TabPFN exhibit the largest confidence gaps, exceeding 0.30 on several mfeat datasets—meaning that correct predictions are assigned confidence near 0.92\textasciitilde{}0.99 while wrong predictions receive around 0.54\textasciitilde{}0.65. In contrast, LightGBM and XGBoost produce narrower gaps: on \texttt{mfeat-morphological}, LightGBM's confidence gap is 0.05 (correct mean 0.95 vs. wrong mean 0.90), meaning the model remains highly confident even when mistaken.
 
 
 
@@ -447,18 +447,24 @@ Takeaway: Confidence scores are directionally useful (correct > wrong) for all m
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/confidence_correct_vs_wrong.png}
-    \caption{Confidence Reliability for Correct and Wrong Predictions across Models}
-    \label{fig: confidence-reliability}
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confidence_correct_vs_wrong.png}
+        \subcaption{Confidence Reliability for Correct and Wrong Predictions across Models}
+        \label{fig: confidence-reliability}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confidence_histogram_by_model.png}
+        \subcaption{Confidence Histogram by Model}
+        \label{fig: confidence-histogram-by-model}
+    \end{subfigure}
+
+    \caption{Analysis of model prediction confidence across TFMs and GBDTs}
+    \label{fig: confidence-analysis}
 \end{figure}
 
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figures/confidence_histogram_by_model.png}
-    \caption{Confidence Histogram by Model}
-    \label{fig: confidence-histogram-by-model}
-\end{figure}
 
 \subsection{Error Patterns}
 
