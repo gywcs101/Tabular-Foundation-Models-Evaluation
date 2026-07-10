@@ -180,6 +180,8 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
 
 \begin{table}[H]
     \centering
+    \caption{Sample-Size Scalability Datasets}
+    \label{tab: Sample-size}
     \begin{tabular}{l|c|c|c|c}
         \hline
         Scale Group     & Dataset       &Samples        &Features       &Classes    \\
@@ -192,14 +194,14 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
         C (10k-30k)     & default\_of\_credit\_card\_clients  &30{,}000    &23 &2          \\
         \hline
     \end{tabular}
-    \caption{Sample-Size Scalability Datasets}
-    \label{tab: Sample-size}
 \end{table}
 
 \textbf{Feature-count scalability} evaluates model behavior as feature dimensionality increases while sample size is held constant at 2,000 rows. We use six mfeat datasets, all of which are 10-class digit recognition tasks:
 
 \begin{table}[htbp]
     \centering
+    \caption{Feature-Size Scalability Datasets}
+    \label{tab: Feature-size}
     \begin{tabular}{l|c|c|c|c}
         \hline
         Scale Group     & Dataset       &Samples        &Features       &Classes    \\
@@ -212,8 +214,6 @@ We select 12 classification datasets from the TALENT benchmark, organized along 
         F3(100-300) & mfeat-pixel &2{,}000 &240 &10 \\
         \hline
     \end{tabular}
-    \caption{Feature-Size Scalability Datasets}
-    \label{tab: Feature-size}
 \end{table}
 
 \subsection{Models}
@@ -282,6 +282,8 @@ We first examine which models achieve the strongest predictive performance acros
 
 \begin{table}[htbp]
     \centering
+    \caption{Predictive Performance Comparison}
+    \label{tab: predictive_performance}
     \begin{tabular}{ccc}
     \hline
         Model & Mean Accuracy & Mean Macro-F1 \\
@@ -292,8 +294,6 @@ We first examine which models achieve the strongest predictive performance acros
         LightGBM & 0.883 & 0.824 \\
     \hline
     \end{tabular}
-    \caption{Predictive Performance Comparison}
-    \label{tab: predictive_performance}
 \end{table}
 
 Both TabICL and TabPFN outperform baselines on average, with TabICL holding a consistent edge over TabPFN. However, \autoref{fig: macro-f1-by-dataset} shows that the advantage of TFMs is not uniform across datasets. On strongly separable binary tasks such as \texttt{sylvine} and \texttt{ringnorm}, all four models exceed 0.94 accuracy and the gaps between them are negligible. The advantage of TFMs is most pronounced in the mfeat series, particularly the mid-dimensional variants: TabICL improves Macro-F1 by 11.6 pp on zernike and 5.0 pp on fourier, though on karhunen the gap narrows to 2.8 pp. On the largest binary datasets (\texttt{jm1}, \texttt{default\_of\_credit\_card\_clients}), all models struggle similarly, with accuracy clustering tightly around 0.81\textasciitilde{} 0.83 and Balanced Accuracy below 0.67, reflecting heavy class imbalance rather than model weakness.
@@ -318,14 +318,14 @@ In summary, TFMs deliver better average predictive performance, but their advant
 
 To understand how model behavior evolves with data volume, we compare performance and cost across the six sample-scale datasets, ranging from 1,109 to 30,000 training samples.
 
-\textbf{Performance trend:} \autoref{fig: sample-scale-macro-f1-line} plots Macro-F1 against increasing sample size. All four models improve as sample size grows from 1k to 5k, but the trajectory flattens or declines beyond 10k, particularly on \texttt{jm1} and \texttt{default\_of\_credit\_card\_clients} where class imbalance penalizes Macro-F1 despite stable accuracy. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(\texttt{sylvine, jm1}) but is outperformed by TabPFN on \texttt{pc1} and \texttt{ringnorm} and by LightGBM on \texttt{kc1} at the smaller scales.
+% \textbf{Performance trend:} \autoref{fig: sample-scale-macro-f1-line} plots Macro-F1 against increasing sample size. All four models improve as sample size grows from 1k to 5k, but the trajectory flattens or declines beyond 10k, particularly on \texttt{jm1} and \texttt{default\_of\_credit\_card\_clients} where class imbalance penalizes Macro-F1 despite stable accuracy. TabICL achieves the highest Macro-F1 on the larger sample-scale datasets(\texttt{sylvine, jm1}) but is outperformed by TabPFN on \texttt{pc1} and \texttt{ringnorm} and by LightGBM on \texttt{kc1} at the smaller scales.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{figures/sample_scale_macro_f1_line.png}
-    \caption{Macro-F1 Sample Scaling}
-    \label{fig: sample-scale-macro-f1-line}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{figures/sample_scale_macro_f1_line.png}
+%     \caption{Macro-F1 Sample Scaling}
+%     \label{fig: sample-scale-macro-f1-line}
+% \end{figure}
 
 
 
@@ -343,6 +343,8 @@ To understand how model behavior evolves with data volume, we compare performanc
 
 \begin{table}[H]
     \centering
+    \caption{$\alpha$ Comparison\ on\ Sample\ Sizes}
+    \label{tab: sample-size-related-time-cost}
     \begin{tabular}{ccc}
     \hline
          Model & $\alpha$ (predict\ time, Gaming) & $\alpha$ (predict\ time, Light) \\
@@ -353,8 +355,6 @@ To understand how model behavior evolves with data volume, we compare performanc
          TabPFN & 1.64 & 1.65 \\
     \hline
     \end{tabular}
-    \caption{$\alpha$ Comparison\ on\ Sample\ Sizes}
-    \label{tab: sample-size-related-time-cost}
 \end{table}
 
 Table~\ref{tab: sample-size-related-time-cost} reports the fitted $\alpha$ values. An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas $\alpha \approx 2.0$ suggests quadratic behavior. TabPFN's scaling factor($\alpha \approx 1.6$) reflects substantially super-linear time growth relative to sample size; specifically, doubling the number of samples increases the prediction time by a factor of approximately $2^{1.6} \approx 3.03$. TabICL scales slightly better at $\alpha \approx 1.4 \sim 1.5$. However, both foundation models scale significantly worse than the decision tree baselines($\alpha \approx 0.3 \sim 0.7$). Specifically, LightGBM and XGBoost maintain sub-linear growth with respect to sample size in prediction runtime. \autoref{fig: sample_scale_prediction_time_seconds_line_by_device} further shows the per-device breakdown of these trends.
@@ -394,15 +394,15 @@ Therefore, although TFMs maintain a predictive advantage across increasing sampl
 We now examine the second controlled-variable line: six mfeat datasets with identical sample size (2,000 rows) but varying feature dimensionality from 6 to 240.
 
 
-\textbf{Performance trend:} \autoref{fig: feature-scale-macro-f1-line} shows that Macro-F1 rises sharply with feature count for all models. On the low-dimensional \texttt{mfeat-morphological} (6 features), all models achieve only $\approx 0.71\sim 0.78$ Macro-F1. By \texttt{mfeat-factors} (216 features), performance exceeds 0.96, and by \texttt{mfeat-pixel} (240 features) it reaches $0.96\sim 0.97$. TabICL and TabPFN consistently outperform tree baselines across the mid-dimensional spectrum (zernike through karhunen), but the gap narrows at the highest dimensions as all models approach near-perfect accuracy.
+% \textbf{Performance trend:} \autoref{fig: feature-scale-macro-f1-line} shows that Macro-F1 rises sharply with feature count for all models. On the low-dimensional \texttt{mfeat-morphological} (6 features), all models achieve only $\approx 0.71\sim 0.78$ Macro-F1. By \texttt{mfeat-factors} (216 features), performance exceeds 0.96, and by \texttt{mfeat-pixel} (240 features) it reaches $0.96\sim 0.97$. TabICL and TabPFN consistently outperform tree baselines across the mid-dimensional spectrum (zernike through karhunen), but the gap narrows at the highest dimensions as all models approach near-perfect accuracy.
 
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{figures/feature_scale_macro_f1_line.png}
-    \caption{Feature Macro-F1 Scaling}
-    \label{fig: feature-scale-macro-f1-line}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{figures/feature_scale_macro_f1_line.png}
+%     \caption{Feature Macro-F1 Scaling}
+%     \label{fig: feature-scale-macro-f1-line}
+% \end{figure}
 
 
 
@@ -411,6 +411,8 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 
 \begin{table}[H]
     \centering
+    \caption{$\alpha$\ Comparison\ on\ Features}
+    \label{tab: time-cost-feature}
     \begin{tabular}{ccc}
     \hline
     Model & $\alpha$ (predict\ time, Gaming) & $\alpha$ (predict\ time, Light) \\
@@ -421,16 +423,14 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
     TabPFN & 0.94 & 0.82 \\
     \hline
     \end{tabular}
-    \caption{$\alpha$\ Comparison\ on\ Features}
-    \label{tab: time-cost-feature}
 \end{table}
 
 
-\textbf{Scalability trend:} Tree baselines show near-zero or negative $\alpha$, meaning their inference time is largely independent of feature dimensionality. TFMs, by contrast, scale substantially with feature count: doubling the number of features roughly doubles predict time for TabICL ($\alpha \approx 0.69$) and slightly more than doubles for TabPFN ($\alpha \approx 0.82\sim 0.94$). On \texttt{mfeat-pixel} (240 features, 2,000 samples), TabPFN predict time reaches 293 seconds on a gaming laptop versus 0.02 seconds for LightGBM---a four-orders-of-magnitude gap (\autoref{fig: feature-scale-loglog-time}).
+Tree baselines show near-zero or negative $\alpha$, meaning their inference time is largely independent of feature dimensionality. TFMs, by contrast, scale substantially with feature count: doubling the number of features roughly doubles predict time for TabICL ($\alpha \approx 0.69$) and slightly more than doubles for TabPFN ($\alpha \approx 0.82\sim 0.94$). On \texttt{mfeat-pixel} (240 features, 2,000 samples), TabPFN predict time reaches 293 seconds on a gaming laptop versus 0.02 seconds for LightGBM---a four-orders-of-magnitude gap (\autoref{fig: feature-scale-loglog-time}).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{figures/feature_scale_loglog_time.png}
+    \includegraphics[width=0.9\linewidth]{figures/feature_scale_loglog_time.png}
     \caption{Feature Scale Loglog Time}
     \label{fig: feature-scale-loglog-time}
 \end{figure}
@@ -511,6 +511,8 @@ Higher dimensionality largely resolves these confusions: on \texttt{mfeat-pixel}
 
 \begin{table}[H]
     \centering
+    \caption{Most Frequent Off-Diagonal Confusions in Multi-Class Mfeat Datasets}
+    \label{tab: error-patterns}
     \begin{tabular}{cccccc}
     \hline
     Dataset (Feat.) & Confusion & LightGBM & TabICL & TabPFN & XGBoost \\
@@ -531,10 +533,7 @@ Higher dimensionality largely resolves these confusions: on \texttt{mfeat-pixel}
     pixel (240)
         & 8 $\rightarrow$ 10  &  3 &  1 &  2 &  2 \\
     \hline
-
     \end{tabular}
-    \caption{Most Frequent Off-Diagonal Confusions in Multi-Class Mfeat Datasets}
-    \label{tab: error-patterns}
 \end{table}
 
 
@@ -545,6 +544,7 @@ Higher dimensionality largely resolves these confusions: on \texttt{mfeat-pixel}
 
 %% =========================================================================
 
+\newpage
 \section{Conclusion}
 
 This study compares tabular foundation models (TFMs) against gradient-boosted decision trees (GBDTs) across three critical dimensions: predictive performance, computational consumption, and reliability.
