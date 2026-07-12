@@ -52,6 +52,8 @@ def place_legend(ax: plt.Axes, ncols: int = 4, y: float = 1.16) -> None:
     handles, labels = ax.get_legend_handles_labels()
     if not handles:
         return
+    if ax.legend_ is not None:
+        ax.legend_.remove()
     ax.legend(
         handles,
         labels,
@@ -69,6 +71,8 @@ def place_legend_right(ax: plt.Axes) -> None:
     handles, labels = ax.get_legend_handles_labels()
     if not handles:
         return
+    if ax.legend_ is not None:
+        ax.legend_.remove()
     ax.legend(
         handles,
         labels,

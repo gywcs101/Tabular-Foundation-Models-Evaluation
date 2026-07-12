@@ -1,100 +1,48 @@
 # Tabular Foundation Models Project
 
-本项目用于完成“人工智能大模型”期末作业 Project 2：Tabular Foundation Models。
+这是“人工智能大模型 II”课程项目 2：Tabular Foundation Models 的最终仓库。
 
-## 当前目标
+本项目围绕一个核心问题展开：在有限算力条件下，Tabular Foundation Models 是否真的比传统梯度提升树更实用。我们在 12 个来自 TALENT 的分类数据集上，对 4 个模型进行了对比：
 
-先搭建一套可复现实验流程：
+- `TabICL`
+- `TabPFN`
+- `LightGBM`
+- `XGBoost`
 
-1. 从 `data/selected_talent/` 读取已经筛选好的 TALENT 分类数据集。
-2. 运行 TabPFN v2、TabICL、LightGBM、XGBoost。
-3. 记录 accuracy、balanced accuracy、macro F1、置信度、训练耗时、推理耗时、墙钟时间、峰值内存和训练吞吐量。
-4. 分开做样本数扩展性、特征数扩展性、缺失值鲁棒性和 retrieval-based in-context learning 加分实验。
-5. 生成报告和 PPT 可用的结果表与图表。
+论文实际关注的维度包括：
 
-## 本地目录约定
+- 预测性能
+- 推理时间
+- 峰值内存
+- 样本数扩展性
+- 特征数扩展性
+- 置信度可靠性
 
-为了让两名成员使用同一份脚本，项目采用项目内相对路径：
+## 主要结果
 
-```text
-.local_envs/       本地 Conda 环境，不上传 GitHub
-.local_models/     本地模型权重，不上传 GitHub
-.local_external/   原始 TALENT/TabArena 等大型外部资源，不上传 GitHub
-data/selected_talent/ 已筛选数据集，上传 GitHub
-```
+- TabICL 和 TabPFN 的平均预测性能高于 LightGBM 和 XGBoost。
+- 但两类 TFM 的推理时间和内存开销明显更高，尤其在样本数增大时更突出。
+- 在 CPU 和普通笔记本环境下，GBDT 仍然是更稳妥、更高效的基线。
 
-推荐环境路径：
+## 目录说明
 
-```text
-.local_envs/tabpfn
-.local_envs/tabicl
-.local_envs/xgboost
-.local_envs/lightgbm
-```
+- `Tabular-Report/`：论文源文件和编译结果
+- `results/final/`：最终汇总表
+- `results/figures/`：最终分析图
+- `results/raw/`：原始实验输出
+- `data/selected_talent/`：筛选后的 TALENT 数据集
+- `scripts/`：实验、分析和控制脚本
 
-推荐权重路径：
+## 论文
 
-```text
-.local_models/tabicl/tabicl-classifier-v2-20260212.ckpt
-.local_models/tabpfn/tabpfn-v2-classifier-finetuned-zk73skhh.ckpt
-```
+论文源码位于 `Tabular-Report/main.tex`，编译后的 PDF 位于 `Tabular-Report/main.pdf`。
 
-## 依赖安装
+## 运行环境
 
-本项目推荐用“每个模型一个环境”的方式协作，避免 TabPFN、TabICL、LightGBM/XGBoost 的依赖互相影响。
+项目默认使用本地相对路径管理环境和模型权重：
 
-示例：
+- `.local_envs/`
+- `.local_models/`
+- `.local_external/`
 
-```powershell
-python -m pip install -r requirements-tabpfn.txt
-python -m pip install -r requirements-tabicl.txt
-python -m pip install -r requirements-lightgbm.txt
-python -m pip install -r requirements-xgboost.txt
-```
-
-如果确认依赖兼容，也可以一次安装全部依赖：
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-## 推荐执行顺序
-
-先进入项目根目录：
-
-```powershell
-cd "D:\Codex项目\人工智能2大作业"
-```
-
-检查本机模型环境、权重和数据：
-
-```powershell
-python scripts/check_local_assets.py
-```
-
-一键运行全部 `data/selected_talent/` 主实验，例如你的名字/ID 是 `gywcs101`：
-
-```powershell
-python scripts/controllers/run_all_selected_talent.py --runner-name gywcs101
-```
-
-实验结果写入：
-
-```text
-results/raw/{runner_name}/{model}/{experiment_axis}/{scale_group}/{dataset_name}/{run_id}/
-```
-
-## 重要说明
-
-- `data/selected_talent/` 当前体积较小，随 GitHub 仓库共享，用于保证两名成员跑同一批数据。
-- `.local_envs/`、`.local_models/`、`.local_external/` 不上传 GitHub。
-- 完整 TALENT 原始包和 TabArena 仓库只作为外部参考，不是运行当前 `selected_talent` 主实验的必要条件。
-- 如果本地 CPU 太慢，优先把 TabICL 和大规模实验放到远端 GPU 上运行。
-
-更多说明：
-
-- GitHub 协作规则：`docs/github_collaboration.md`
-- TALENT 数据集筛选准则：`docs/dataset_selection_criteria.md`
-- 仓库结构说明：`docs/repository_structure.md`
-- 实验测量计划：`docs/measurement_plan.md`
-- 数据分析与绘图计划：`docs/data_analysis_visualization_plan.md`
+这些目录不纳入仓库主体内容。
