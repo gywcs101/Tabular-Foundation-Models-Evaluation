@@ -625,31 +625,32 @@ Limitations include the focus on classification without hyperparameter tuning. F
 % Part 6： 附录
 % =============================================
 
-\appendix
-\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thefigure}{S\arabic{figure}}
 \setcounter{figure}{0}
-
-\section{Supplementary Figures}
+\fancyhead[L]{\small\sffamily\scshape APPENDIX}
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix}
+\markboth{APPENDIX}{APPENDIX}
 
 This appendix collects figures generated during the experiments that were not included in the main text for brevity. All figures are organized by experimental dimension. Figure numbering in this appendix is independent of the main text.
 
 \subsection*{Performance Summary}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/performance_accuracy_by_model.png}
     \caption{Accuracy comparison by model across all 12 datasets. Boxes show quartile ranges with individual dataset values overlaid.}
     \label{fig:app-accuracy-by-model}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/performance_accuracy_by_dataset.png}
     \caption{Accuracy comparison by dataset. Each group compares the four models on a single dataset.}
     \label{fig:app-accuracy-by-dataset}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/performance_macro_f1_by_model.png}
     \caption{Macro-F1 comparison by model across all 12 datasets.}
@@ -658,35 +659,35 @@ This appendix collects figures generated during the experiments that were not in
 
 \subsection*{Sample-Size Scalability}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/sample_scale_accuracy_line.png}
     \caption{Accuracy trend across increasing sample sizes (1,109--30,000 training samples).}
     \label{fig:app-sample-acc-line}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/sample_scale_macro_f1_line.png}
     \caption{Macro-F1 trend across increasing sample sizes.}
     \label{fig:app-sample-mf1-line}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/sample_scale_wall_time_seconds_line_by_device.png}
     \caption{Wall time by device across sample sizes.}
     \label{fig:app-sample-wall-time}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/sample_scale_peak_memory_bar_by_device.png}
     \caption{Peak memory consumption by device across sample sizes.}
     \label{fig:app-sample-memory-bar}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -705,7 +706,7 @@ This appendix collects figures generated during the experiments that were not in
     \label{fig:app-sample-loglog-time-by-device}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -726,35 +727,35 @@ This appendix collects figures generated during the experiments that were not in
 
 \subsection*{Feature-Count Scalability}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/feature_scale_accuracy_line.png}
     \caption{Accuracy trend across increasing feature counts (6--240 features, 2,000 training samples).}
     \label{fig:app-feature-acc-line}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/feature_scale_macro_f1_line.png}
     \caption{Macro-F1 trend across increasing feature counts.}
     \label{fig:app-feature-mf1-line}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/feature_scale_wall_time_seconds_line_by_device.png}
     \caption{Wall time by device across feature counts.}
     \label{fig:app-feature-wall-time}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/feature_scale_loglog_memory.png}
     \caption{Log-log peak memory vs.\ feature count.}
     \label{fig:app-feature-loglog-mem}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -773,7 +774,7 @@ This appendix collects figures generated during the experiments that were not in
     \label{fig:app-feature-loglog-time-by-device}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -794,7 +795,7 @@ This appendix collects figures generated during the experiments that were not in
 
 \subsection*{Confusion Matrices}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
@@ -820,7 +821,7 @@ This appendix collects figures generated during the experiments that were not in
     \label{fig:app-cm-pixel}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
