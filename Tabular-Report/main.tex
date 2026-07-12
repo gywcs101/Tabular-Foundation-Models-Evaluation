@@ -301,7 +301,7 @@ Both TabICL and TabPFN outperform baselines on average, with TabICL holding a co
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/performance_macro_f1_by_dataset.png}
-    \caption{Performance by Dataset}
+    \caption{Macro-F1 Performance Comparison Across Twelve Datasets}
     \label{fig: macro-f1-by-dataset}
 \end{figure}
 
@@ -334,12 +334,41 @@ To understand how model behavior evolves with data volume, we compare performanc
 
 \textbf{Time cost:} The more consequential divergence emerges in time cost. As sample size increases from 1k to 30k, tree baselines remain below 30 ms throughout. TabICL predict time rises from 3.7 s to 419 s (mean across three gaming laptops; range 2.0\textasciitilde{} 5.5 s to 230\textasciitilde{} 598 s), and TabPFN from 14.4 s to 3,551 s (range 7.1\textasciitilde{} 21.3 s to 1,716\textasciitilde{} 4,572 s). This is captured quantitatively by the scalability exponent $\alpha$, estimated via log-log linear regression (\autoref{fig: sample-scale-loglog-time}):
 
-\begin{figure}[H]
+
+\begin {figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{figures/sample_scale_loglog_time.png}
-    \caption{Time Cost Sample Scaling}
-    \label{fig: sample-scale-loglog-time}
+    \begin{subfigure} [b]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_loglog_time.png}
+        \subcaption{Wall Time Scaling}
+        \label{fig: sample-scale-loglog-time}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \begin{subfigure} [b]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_predict_time_seconds_line_by_device.png}
+        \subcaption{Predict Time Scaling}
+        \label{fig: sample_scale_prediction_time_seconds_line_by_device}
+    \end{subfigure}
+    \caption{Time Scaling with Respect to Sample Size}
 \end{figure}
+
+
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{figures/sample_scale_loglog_time.png}
+%     \caption{Time Cost Sample Scaling}
+%     \label{fig: sample-scale-loglog-time}
+% \end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\linewidth]{figures/sample_scale_predict_time_seconds_line_by_device.png}
+%     \caption{Sample Scaling}
+%     \label{fig: sample_scale_prediction_time_seconds_line_by_device}
+% \end{figure}
 
 \begin{table}[H]
     \centering
@@ -359,12 +388,7 @@ To understand how model behavior evolves with data volume, we compare performanc
 
 Table~\ref{tab: sample-size-related-time-cost} reports the fitted $\alpha$ values. An exponent $\alpha \approx 1.0$ indicates approximately linear growth; whereas $\alpha \approx 2.0$ suggests quadratic behavior. TabPFN's scaling factor($\alpha \approx 1.6$) reflects substantially super-linear time growth relative to sample size; specifically, doubling the number of samples increases the prediction time by a factor of approximately $2^{1.6} \approx 3.03$. TabICL scales slightly better at $\alpha \approx 1.4 \sim 1.5$. However, both foundation models scale significantly worse than the decision tree baselines($\alpha \approx 0.3 \sim 0.7$). Specifically, LightGBM and XGBoost maintain sub-linear growth with respect to sample size in prediction runtime. \autoref{fig: sample_scale_prediction_time_seconds_line_by_device} further shows the per-device breakdown of these trends.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{figures/sample_scale_predict_time_seconds_line_by_device.png}
-    \caption{Sample Scaling}
-    \label{fig: sample_scale_prediction_time_seconds_line_by_device}
-\end{figure}
+
 
 
 
@@ -376,7 +400,7 @@ Table~\ref{tab: sample-size-related-time-cost} reports the fitted $\alpha$ value
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{figures/sample_scale_loglog_memory.png}
+    \includegraphics[width=0.9\linewidth]{figures/sample_scale_loglog_memory.png}
     \caption{Memory Sample Scaling}
     \label{fig: sample-scale-loglog-memory}
 \end{figure}
@@ -428,17 +452,46 @@ We now examine the second controlled-variable line: six mfeat datasets with iden
 
 Tree baselines show near-zero or negative $\alpha$, meaning their inference time is largely independent of feature dimensionality. TFMs, by contrast, scale substantially with feature count: doubling the number of features roughly doubles predict time for TabICL ($\alpha \approx 0.69$) and slightly more than doubles for TabPFN ($\alpha \approx 0.82\sim 0.94$). On \texttt{mfeat-pixel} (240 features, 2,000 samples), TabPFN predict time reaches 293 seconds on a gaming laptop versus 0.02 seconds for LightGBM---a four-orders-of-magnitude gap (\autoref{fig: feature-scale-loglog-time}).
 
-\begin{figure}[H]
+\begin{figure} [h] 
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/feature_scale_loglog_time.png}
-    \caption{Feature Scale Loglog Time}
-    \label{fig: feature-scale-loglog-time}
+    \begin{subfigure}[b]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_loglog_time.png}
+        \subcaption{Wall time Scaling}
+        \label{fig: feature-scale-loglog-time}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \begin{subfigure}[b]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_predict_time_seconds_line_by_device.png}
+        \subcaption{Predict Time Scaling}
+        \label{fig: feature_scale_prediction_time_seconds_line_by_device}
+    \end{subfigure}
+    \caption{Time Scaling with Respect to Feature Size}
 \end{figure}
+
+
+% \begin{figure}[H]
+%     \centering
+    
+%     \caption{Feature Scale Loglog Time}
+    
+% \end{figure}
+
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{figures/feature_scale_predict_time_seconds_line_by_device.png}
+%     \caption{Feature Scaling}
+%     \label{fig: feature_scale_prediction_time_seconds_line_by_device}
+% \end{figure}
 
 
 \textbf{Memory cost:} Memory scaling with feature count is less extreme than with sample size (\autoref{fig: feature-scale-peak-memory-bar-by-device}). TabICL memory grows from 1.2 GB (6 features) to 17.5 GB (240 features), while tree baselines remain at 190–250 MB throughout. TabPFN memory grows from 0.7 GB to 2.2 GB.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/feature_scale_peak_memory_bar_by_device.png}
     \caption{Feature Scale Peak-Memory Bar by Device}
@@ -463,7 +516,7 @@ A concerning pattern emerges across all models: wrong predictions routinely rece
 Confidence scores serve as a directionally useful signal for all models, yet the absolute calibration is unreliable. Users should not interpret high confidence as a guarantee of correctness, regardless of the model family.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -567,5 +620,230 @@ Limitations include the focus on classification without hyperparameter tuning. F
 \newpage
 
 \printbibliography[title={Reference}]
+
+% =============================================
+% Part 6： 附录
+% =============================================
+
+\appendix
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+
+\section{Supplementary Figures}
+
+This appendix collects figures generated during the experiments that were not included in the main text for brevity. All figures are organized by experimental dimension. Figure numbering in this appendix is independent of the main text.
+
+\subsection*{Performance Summary}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/performance_accuracy_by_model.png}
+    \caption{Accuracy comparison by model across all 12 datasets. Boxes show quartile ranges with individual dataset values overlaid.}
+    \label{fig:app-accuracy-by-model}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/performance_accuracy_by_dataset.png}
+    \caption{Accuracy comparison by dataset. Each group compares the four models on a single dataset.}
+    \label{fig:app-accuracy-by-dataset}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/performance_macro_f1_by_model.png}
+    \caption{Macro-F1 comparison by model across all 12 datasets.}
+    \label{fig:app-macro-f1-by-model}
+\end{figure}
+
+\subsection*{Sample-Size Scalability}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/sample_scale_accuracy_line.png}
+    \caption{Accuracy trend across increasing sample sizes (1,109--30,000 training samples).}
+    \label{fig:app-sample-acc-line}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/sample_scale_macro_f1_line.png}
+    \caption{Macro-F1 trend across increasing sample sizes.}
+    \label{fig:app-sample-mf1-line}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/sample_scale_wall_time_seconds_line_by_device.png}
+    \caption{Wall time by device across sample sizes.}
+    \label{fig:app-sample-wall-time}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/sample_scale_peak_memory_bar_by_device.png}
+    \caption{Peak memory consumption by device across sample sizes.}
+    \label{fig:app-sample-memory-bar}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_light_laptop_loglog_time.png}
+        \subcaption{Light laptop}
+        \label{fig:app-sample-ll-loglog-time}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_gaming_laptop_loglog_time.png}
+        \subcaption{Gaming laptop}
+        \label{fig:app-sample-gl-loglog-time}
+    \end{subfigure}
+    \caption{Log-log wall time vs.\ sample size, per device.}
+    \label{fig:app-sample-loglog-time-by-device}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_light_laptop_loglog_memory.png}
+        \subcaption{Light laptop}
+        \label{fig:app-sample-ll-loglog-mem}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sample_scale_gaming_laptop_loglog_memory.png}
+        \subcaption{Gaming laptop}
+        \label{fig:app-sample-gl-loglog-mem}
+    \end{subfigure}
+    \caption{Log-log peak memory vs.\ sample size, per device.}
+    \label{fig:app-sample-loglog-mem-by-device}
+\end{figure}
+
+\subsection*{Feature-Count Scalability}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/feature_scale_accuracy_line.png}
+    \caption{Accuracy trend across increasing feature counts (6--240 features, 2,000 training samples).}
+    \label{fig:app-feature-acc-line}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/feature_scale_macro_f1_line.png}
+    \caption{Macro-F1 trend across increasing feature counts.}
+    \label{fig:app-feature-mf1-line}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/feature_scale_wall_time_seconds_line_by_device.png}
+    \caption{Wall time by device across feature counts.}
+    \label{fig:app-feature-wall-time}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/feature_scale_loglog_memory.png}
+    \caption{Log-log peak memory vs.\ feature count.}
+    \label{fig:app-feature-loglog-mem}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_light_laptop_loglog_time.png}
+        \subcaption{Light laptop}
+        \label{fig:app-feature-ll-loglog-time}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_gaming_laptop_loglog_time.png}
+        \subcaption{Gaming laptop}
+        \label{fig:app-feature-gl-loglog-time}
+    \end{subfigure}
+    \caption{Log-log wall time vs.\ feature count, per device.}
+    \label{fig:app-feature-loglog-time-by-device}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_light_laptop_loglog_memory.png}
+        \subcaption{Light laptop}
+        \label{fig:app-feature-ll-loglog-mem}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/feature_scale_gaming_laptop_loglog_memory.png}
+        \subcaption{Gaming laptop}
+        \label{fig:app-feature-gl-loglog-mem}
+    \end{subfigure}
+    \caption{Log-log peak memory vs.\ feature count, per device.}
+    \label{fig:app-feature-loglog-mem-by-device}
+\end{figure}
+
+\subsection*{Confusion Matrices}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_xgboost_mfeat-pixel_2000rows_240feat_multiclass.png}
+        \subcaption{XGBoost}
+        \label{fig:app-cm-pixel-xgb}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_tabpfn_mfeat-pixel_2000rows_240feat_multiclass.png}
+        \subcaption{TabPFN}
+        \label{fig:app-cm-pixel-tabpfn}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_lightgbm_mfeat-pixel_2000rows_240feat_multiclass.png}
+        \subcaption{LightGBM}
+        \label{fig:app-cm-pixel-lgbm}
+    \end{subfigure}
+    \caption{Confusion matrices for \texttt{mfeat-pixel} (240 features, 2,000 training samples). The TabICL version appears in the main text (Figure~6).}
+    \label{fig:app-cm-pixel}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_xgboost_mfeat-morphological_2000rows_6feat_multiclass.png}
+        \subcaption{XGBoost}
+        \label{fig:app-cm-morph-xgb}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_tabpfn_mfeat-morphological_2000rows_6feat_multiclass.png}
+        \subcaption{TabPFN}
+        \label{fig:app-cm-morph-tabpfn}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/confusion_matrix_lightgbm_mfeat-morphological_2000rows_6feat_multiclass.png}
+        \subcaption{LightGBM}
+        \label{fig:app-cm-morph-lgbm}
+    \end{subfigure}
+    \caption{Confusion matrices for \texttt{mfeat-morphological} (6 features, 2,000 training samples). The TabICL version appears in the main text (Figure~6).}
+    \label{fig:app-cm-morph}
+\end{figure}
 
 \end{document}
