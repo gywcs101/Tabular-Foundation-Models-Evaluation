@@ -93,16 +93,16 @@ Our results indicate that while TFMs consistently achieve superior predictive pe
 \section{Problem Definition}
 \label{sec:problem-definition}
 
-This study asks: \textit{do TFMs definitively outperform GBDTs?} We decompose this into four research questions:
+This study asks: \textit{do TFMs definitively outperform GBDTs?} We decompose this into 3 research questions:
 
 \begin{enumerate}
     \item \textbf{Predictive performance.} Do TFMs achieve superior accuracy across diverse classification tasks, or is their advantage confined to specific regimes?
-    \item \textbf{Computational cost.} Does the inference time and memory overhead of TFMs negate any accuracy gains in practical deployment?
+    % \item \textbf{Computational cost.} Does the inference time and memory overhead of TFMs negate any accuracy gains in practical deployment?
     \item \textbf{Scalability.} How do performance and cost scale with increasing sample size and feature dimensionality under controlled conditions?
     \item \textbf{Reliability.} Do both model families suffer from poor confidence calibration, assigning high confidence to incorrect predictions?
 \end{enumerate}
 
-We address these questions through a systematic, controlled-variable benchmark comparing two TFMs (TabPFN, TabICL) and two GBDTs (XGBoost, LightGBM) on 12 classification datasets from TALENT, evaluated under identical train/test splits and CPU-only execution.
+We address these questions through a systematic, controlled-variable benchmark comparing two TFMs (TabPFN, TabICL) and two GBDTs (XGBoost, LightGBM) on 12 classification datasets from TALENT, evaluated under identical train/test splits.
 
 
 %%===============================
